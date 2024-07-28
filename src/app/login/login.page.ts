@@ -69,8 +69,9 @@ export class LoginPage implements OnInit {
       },
       (error: any) => {
         this.loadingCtrl.dismiss();
-        switch ( error['statusText'] ) {
-          case "Unauthorized":
+        console.log(error);
+        switch ( error['status'] ) {
+          case 401:
             alert("Non autorizzato");
           break;
           default:
