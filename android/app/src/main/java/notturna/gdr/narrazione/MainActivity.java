@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package notturna.gdr.narrazione;
 
 import com.getcapacitor.BridgeActivity;
 
