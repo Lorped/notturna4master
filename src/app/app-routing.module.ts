@@ -18,6 +18,10 @@ const routes: Routes = [
     path: 'dadi',
     loadChildren: () => import('./dadi/dadi.module').then( m => m.DadiPageModule)
   },
+  {
+    path: 'personaggio/:id',
+    loadChildren: () => import('./personaggio/personaggio.module').then( m => m.PersonaggioPageModule)
+  },
 ];
 
 @NgModule({

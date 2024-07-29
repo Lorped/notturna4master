@@ -1,0 +1,434 @@
+
+<ion-header>
+
+
+	<ion-toolbar color="medium">
+	  <ion-title>Personaggio</ion-title>
+	</ion-toolbar>
+  
+  </ion-header>
+  
+<ion-content  color="dark" class="master" no-padding >
+	<h3 class="mypad2">{{scheda['nomepg']}}</h3>
+	<div class="mypad3" *ngIf="scheda['nomeplayer']!=''"> ({{scheda.nomeplayer}})</div>
+
+    <div style="background-color: #222222; border: 1px solid #ff0000;  alig: center; border-radius: 2px; margin-left:5px; margin-right:5px;" >
+		<ion-grid class="mypad">
+			<ion-row>
+				<ion-col size="3" style="color:#FF0000;">Clan</ion-col>
+				<ion-col size="4" >{{scheda['nomeclan']}}</ion-col>
+				<ion-col size="4" style="color:#FF0000;">Generazione</ion-col>
+				<ion-col size="1" >{{scheda['generazione']}}</ion-col>
+			</ion-row>
+			<ion-row>
+				<ion-col size="3" style="color:#FF0000;">Status</ion-col>
+				<ion-col size="4" >{{scheda['status']}}</ion-col>
+				<ion-col size="4" style="color:#FF0000;">Blood Potency &nbsp;</ion-col>
+        <ion-col size="1" >{{scheda['bloodp']}}</ion-col>
+			</ion-row>
+			<ion-row>
+				<ion-col size="3" style="color:#FF0000;">Sentiero</ion-col>
+				<ion-col style="text-align:left;">{{scheda['sentiero']}}&nbsp;&nbsp;<span style="color:#FF0000;">-</span>&nbsp;&nbsp;{{scheda['valsentiero']}}/10</ion-col>
+			</ion-row>
+			<ion-row>
+				<ion-col size="5" style="color:#FF0000;">Forza di Volontà</ion-col>
+				<ion-col size="2" >{{scheda['fdv']}}/{{scheda['fdvmax']}}</ion-col>
+				<ion-col size="2" style="color:#FF0000;">XP <span style="color:#ffffff;">{{scheda['xp']}}</span></ion-col>
+				<ion-col size="3" style="color:#FF0000;">Spesi <span style="color:#ffffff;">{{scheda['xpspesi']}}</span></ion-col>
+			</ion-row>
+			<ion-row>
+				<ion-col size="7" style="color:#FF0000;">Fama in città</ion-col>
+				<!-- <ion-col><img src="assets/img/5b/{{scheda['fama1']}}.png"></ion-col> -->
+        <ion-col><i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle mymedicon myred2" [ngClass]="{'mywhite': ix >= scheda['fama1']}"></i></ion-col>
+			</ion-row>
+			<ion-row>
+				<ion-col size="7" style="color:#FF0000;">Fama tra i Vampiri</ion-col>
+				<!-- <ion-col><img src="assets/img/5b/{{scheda['fama2']}}.png"></ion-col> -->
+        <ion-col><i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle mymedicon myred2" [ngClass]="{'mywhite': ix >= scheda['fama2']}"></i></ion-col>
+			</ion-row>
+			<ion-row>
+				<ion-col size="7" style="color:#FF0000;">Fama nel Mondo Oscuro</ion-col>
+				<!--  <ion-col><img src="assets/img/5b/{{scheda['fama3']}}.png"></ion-col> -->
+        <ion-col><i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle mymedicon myred2" [ngClass]="{'mywhite': ix >= scheda['fama3']}"></i></ion-col>
+			</ion-row>
+      <ion-row>
+        <ion-col size="3" style="color:#FF0000;" >Punti Ferita</ion-col>
+        <ion-col size="1">{{pf}}</ion-col>
+        <ion-col size="1" style="color:#FF0000;" >RD</ion-col>
+        <ion-col size="1">{{scheda['rd']}}</ion-col>
+        <ion-col size="1" style="color:#FF0000;" >RP</ion-col>
+        <ion-col size="1">{{rp}}</ion-col>
+        <ion-col size="2" style="color:#FF0000;" >Bane</ion-col>
+        <ion-col size="1">+{{scheda['bane']}}</ion-col>
+      </ion-row>
+			<ion-row>
+				<ion-col style="color:#FF0000;" style="text-align: center;" >Sete ({{scheda['PScorrenti']}})</ion-col>
+			</ion-row>
+			<ion-row>
+				<ion-col style="text-align: center;"><button (click)="menops()" [disabled]="scheda['PScorrenti']<=0" ><ion-icon name="caret-back-outline" color="#0505ff"></ion-icon></button></ion-col>
+				<!-- <ion-col size="8" style="text-align: center;"><img src="assets/img/red.png" *ngFor="let i of scheda['PScorrenti'] | times "><img src="assets/img/white.png" *ngFor="let i of psvuoti | times "></ion-col> -->
+        <ion-col size="8" style="text-align: center;"><i *ngFor="let item of scheda['PScorrenti']|times ; let ix = index" class="fa fa-circle mysmallicon myred2"></i><i *ngFor="let item of psvuoti|times ; let ix = index" class="fa fa-circle mysmallicon mywhite"></i></ion-col>
+				<ion-col style="text-align: center;"><button (click)="piups()" [disabled]="psvuoti==0"><ion-icon name="caret-forward-outline" color="#0505ff"></ion-icon></button></ion-col>
+
+			</ion-row>
+		</ion-grid>
+    </div>
+
+<!--
+  <ion-grid>
+    <ion-row>
+      <ion-col><hr/></ion-col>
+      <ion-col style="color:#FFFFFF; font-size: 1.5em; text-align: center;">Attributi</ion-col>
+      <ion-col><hr/></ion-col>
+    </ion-row>
+  </ion-grid>
+-->
+	<p>
+	<div style="  align: center; margin-left:10px; margin-right:10px;" >
+		<ion-grid no-padding >
+			<ion-row style="align-items: center;">
+				<ion-col size="1" ><hr/></ion-col>
+				<ion-col size="6" style="text-align: center;">Attributi Fisici (max {{scheda.maxstat}})</ion-col>
+				<ion-col ><hr/></ion-col>
+			</ion-row>
+			<ion-row>
+				<ion-col>Forza</ion-col>
+				<ion-col>Destrezza</ion-col>
+				<ion-col>Attutimento</ion-col>
+			</ion-row>
+			<ion-row>
+        <!--
+          <ion-col><img src="assets/img/10/{{scheda.forza}}.png"></ion-col>
+          <ion-col><img src="assets/img/10/{{scheda.destrezza}}.png"></ion-col>
+          <ion-col><img src="assets/img/10/{{scheda.attutimento}}.png"></ion-col>
+        -->
+        <ion-col>
+          <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle myxsmallicon myred2" [ngClass]="{'mywhite': ix >= scheda.forza}"></i><br>
+          <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle myxsmallicon myred2" [ngClass]="{'mywhite': ix+5 >= scheda.forza}"></i>
+        </ion-col>
+        <ion-col>
+          <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle myxsmallicon myred2" [ngClass]="{'mywhite': ix >= scheda.destrezza}"></i><br>
+          <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle myxsmallicon myred2" [ngClass]="{'mywhite': ix+5 >= scheda.destrezza}"></i>
+        </ion-col>
+        <ion-col>
+          <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle myxsmallicon myred2" [ngClass]="{'mywhite': ix >= scheda.attutimento}"></i><br>
+          <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle myxsmallicon myred2" [ngClass]="{'mywhite': ix+5 >= scheda.attutimento}"></i>
+        </ion-col>
+			</ion-row>
+			<ion-row style="align-items: center;">
+				<ion-col size="1" ><hr/></ion-col>
+				<ion-col size="4" style="text-align: center;">Attributi Sociali</ion-col>
+				<ion-col><hr/></ion-col>
+			</ion-row>
+			<ion-row>
+				<ion-col>Carisma</ion-col>
+				<ion-col>Persuasione</ion-col>
+				<ion-col>Saggezza</ion-col>
+			</ion-row>
+			<ion-row>
+        <!--
+        <ion-col><img src="assets/img/10/{{scheda.carisma}}.png"></ion-col>
+        <ion-col><img src="assets/img/10/{{scheda.persuasione}}.png"></ion-col>
+        <ion-col><img src="assets/img/10/{{scheda.saggezza}}.png"></ion-col>
+        -->
+        <ion-col>
+          <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle myxsmallicon myred2" [ngClass]="{'mywhite': ix >= scheda.carisma}"></i><br>
+          <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle myxsmallicon myred2" [ngClass]="{'mywhite': ix+5 >= scheda.carisma}"></i>
+        </ion-col>
+        <ion-col>
+          <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle myxsmallicon myred2" [ngClass]="{'mywhite': ix >= scheda.persuasione}"></i><br>
+          <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle myxsmallicon myred2" [ngClass]="{'mywhite': ix+5 >= scheda.persuasione}"></i>
+        </ion-col>
+        <ion-col>
+          <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle myxsmallicon myred2" [ngClass]="{'mywhite': ix >= scheda.saggezza}"></i><br>
+          <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle myxsmallicon myred2" [ngClass]="{'mywhite': ix+5 >= scheda.saggezza}"></i>
+        </ion-col>
+			</ion-row>
+			<ion-row style="align-items: center;">
+				<ion-col size="1" ><hr/></ion-col>
+				<ion-col size="5" style="text-align: center;">Attributi Mentali</ion-col>
+				<ion-col><hr/></ion-col>
+			</ion-row>
+			<ion-row>
+				<ion-col>Percezione</ion-col>
+				<ion-col>Intelligenza</ion-col>
+				<ion-col>Prontezza</ion-col>
+			</ion-row>
+			<ion-row>
+        <!--
+        <ion-col><img src="assets/img/10/{{scheda.percezione}}.png"></ion-col>
+        <ion-col><img src="assets/img/10/{{scheda.intelligenza}}.png"></ion-col>
+        <ion-col><img src="assets/img/10/{{scheda.prontezza}}.png"></ion-col>
+        -->
+        <ion-col>
+          <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle myxsmallicon myred2" [ngClass]="{'mywhite': ix >= scheda.percezione}"></i><br>
+          <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle myxsmallicon myred2" [ngClass]="{'mywhite': ix+5 >= scheda.percezione}"></i>
+        </ion-col>
+        <ion-col>
+          <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle myxsmallicon myred2" [ngClass]="{'mywhite': ix >= scheda.intelligenza}"></i><br>
+          <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle myxsmallicon myred2" [ngClass]="{'mywhite': ix+5 >= scheda.intelligenza}"></i>
+        </ion-col>
+        <ion-col>
+          <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle myxsmallicon myred2" [ngClass]="{'mywhite': ix >= scheda.prontezza}"></i><br>
+          <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle myxsmallicon myred2" [ngClass]="{'mywhite': ix+5 >= scheda.prontezza}"></i>
+        </ion-col>
+			</ion-row>
+		</ion-grid>
+	</div>
+
+	<ion-grid>
+		<ion-row style="align-items: center;">
+			<ion-col ><hr/></ion-col>
+			<ion-col size ="6" style="color:#FFFFFF; text-align: center; font-size: 1.1em;">Discipline e Taumaturgie</ion-col>
+			<ion-col ><hr/></ion-col>
+		</ion-row>
+		<ion-row >
+			<ion-col size="7">Bonus attivazione</ion-col>
+			<ion-col>+{{ scheda.attivazione }}</ion-col>
+		</ion-row>
+
+		<ion-row *ngFor="let desc of myskill">
+			<ion-col size="7" *ngIf="desc.tipologia == 2 ">{{ desc.nomeskill }}</ion-col>
+      <ion-col *ngIf="desc.tipologia == 2 ">
+        <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle mysmallicon myred2" [ngClass]="{'mywhite': ix >= desc.livello}"></i><br>
+        <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle mysmallicon myred2" [ngClass]="{'mywhite': ix+5 >= desc.livello}"></i>
+      </ion-col>
+		</ion-row>
+
+		<ion-row *ngFor="let desc of myskill">
+			<ion-col size="7" *ngIf="desc.tipologia == 3 "><span style="color:#FF0000;">&nbsp;&nbsp;- </span> {{ desc.nomeskill }}</ion-col>
+			<ion-col *ngIf="desc.tipologia == 3 ">
+        <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle mysmallicon myred2" [ngClass]="{'mywhite': ix >= desc.livello}"></i>
+      </ion-col>
+		</ion-row>
+
+		<ion-row style="align-items: center;" *ngIf="rituali == 1">
+			<ion-col ><hr/></ion-col>
+			<ion-col size="6" style="text-align: center; font-size: 1em;">Rituali</ion-col>
+			<ion-col ><hr/></ion-col>
+		</ion-row>
+
+		<ion-row *ngFor="let desc of myskill">
+			<ion-col *ngIf="desc.tipologia == 11 "> {{ desc.nomeskill }}</ion-col>
+		</ion-row>
+
+    <ion-row style="align-items: center;">
+			<ion-col ><hr/></ion-col>
+			<ion-col size="6" style="text-align: center; font-size: 1em;">Poteri</ion-col>
+			<ion-col ><hr/></ion-col>
+		</ion-row>
+
+    <ion-row *ngFor="let pot of poteri">
+      <ion-col size="12" *ngIf="pot.livellopot==1"><span style="color:#FF0000;">{{ pot.nomedisc }}</span> </ion-col>
+      <ion-col >{{ pot.livellopot }} -  {{ pot.nomepotere }}</ion-col>
+      <ion-col size="1"> {{ pot.attivo }}</ion-col>
+    </ion-row>
+
+		<ion-row style="align-items: center;">
+			<ion-col ><hr/></ion-col>
+			<ion-col size="6" style="text-align: center; font-size: 1em;">Competenze del Personaggio</ion-col>
+			<ion-col ><hr/></ion-col>
+		</ion-row>
+
+		<ion-row *ngFor="let desc of myskill">
+			<ion-col size="7" *ngIf="desc.tipologia == 0 ">{{ desc.nomeskill }}</ion-col>
+			<ion-col *ngIf="desc.tipologia == 0 ">
+        <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle mysmallicon myred2" [ngClass]="{'mywhite': ix >= desc.livello}"></i>
+      </ion-col>
+		</ion-row>
+
+		<ion-row style="align-items: center;">
+			<ion-col ><hr/></ion-col>
+			<ion-col size="5" style="text-align: center;">Skill di Combattimento</ion-col>
+			<ion-col ><hr/></ion-col>
+		</ion-row>
+
+		<ion-row *ngFor="let desc of myskill">
+			<ion-col size="7" *ngIf="desc.tipologia == 1 ">{{ desc.nomeskill }}</ion-col>
+			<ion-col *ngIf="desc.tipologia == 1 ">
+        <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle mysmallicon myred2" [ngClass]="{'mywhite': ix >= desc.livello}"></i>
+      </ion-col>
+		</ion-row>
+
+	</ion-grid>
+
+	<ion-grid>
+		<ion-row style="align-items: center;">
+			<ion-col ><hr/></ion-col>
+			<ion-col size="6" style="color:#FFFFFF; text-align: center; font-size: 1.1em;">Background</ion-col>
+			<ion-col ><hr/></ion-col>
+		</ion-row>
+
+		<ion-row *ngFor="let desc of myskill">
+			<ion-col size="7" *ngIf="desc.tipologia == 5 ">{{ desc.nomeskill }}</ion-col>
+			<ion-col *ngIf="desc.tipologia == 5 && desc.nomeskill != 'Contatti' ">
+        <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle mysmallicon myred2" [ngClass]="{'mywhite': ix >= desc.livello}"></i>
+      </ion-col>
+			<!-- <ion-col *ngIf="desc.tipologia == 5 && desc.nomeskill == 'Contatti' " stype="text-align:left;">{{ desc.livello }}/20</ion-col>  -->
+		</ion-row>
+
+		<ion-row *ngFor="let desc of myskill">
+			<ion-col size="7" *ngIf="desc.tipologia == 7  ">&nbsp;&nbsp;- {{ desc.nomeskill }}</ion-col>
+			<ion-col *ngIf="desc.tipologia == 7  ">
+        <i *ngFor="let item of 5|times ; let ix = index" class="fa fa-circle mysmallicon myred2" [ngClass]="{'mywhite': ix >= desc.livello}"></i>
+      </ion-col>
+		</ion-row>
+
+		<ion-row style="align-items: center;">
+			<ion-col ><hr/></ion-col>
+			<ion-col size="6" style="color:#FFFFFF; text-align: center; font-size: 1.1em;">Pregi</ion-col>
+			<ion-col ><hr/></ion-col>
+		</ion-row>
+
+		<ion-row *ngFor="let desc of myskill">
+			<ion-col *ngIf="desc.tipologia == 8 && desc.livello > 0 ">{{ desc.nomeskill}}</ion-col>
+		</ion-row>
+
+		<ion-row style="align-items: center;">
+			<ion-col ><hr/></ion-col>
+			<ion-col size="6" style="color:#FFFFFF; text-align: center; font-size: 1.1em;">Difetti</ion-col>
+			<ion-col ><hr/></ion-col>
+		</ion-row>
+
+		<ion-row *ngFor="let desc of myskill">
+			<ion-col *ngIf="desc.tipologia == 8 && desc.livello < 0 ">{{ desc.nomeskill}}</ion-col>
+		</ion-row>
+
+		<ion-row style="align-items: center;">
+			<ion-col ><hr/></ion-col>
+			<ion-col size="6" style="color:#FFFFFF; text-align: center; font-size: 1.1em;">Danni delle Armi</ion-col>
+			<ion-col ><hr/></ion-col>
+		</ion-row>
+
+    <ion-row>
+      <ion-col size="7" >Pugno/Calcio</ion-col>
+      <ion-col >{{ foripot2  }} </ion-col>
+	</ion-row>
+	<ion-row *ngIf="artigli == 1">
+      <ion-col size="7" >Artigli della Bestia</ion-col>
+      <ion-col >{{ 1*forza +  1*rissa + 1*potenza +1 }} </ion-col>
+	</ion-row>
+  <ion-row>
+      <ion-col size="7" >Pugnale/Paletto</ion-col>
+      <ion-col >{{ 1*fomipot2 +1 }} </ion-col>
+  </ion-row>
+  <ion-row>
+      <ion-col size="7" >Spada corta/Mazza</ion-col>
+      <ion-col >{{ 1*fomipot2 +2 }} </ion-col>
+	</ion-row>
+  <ion-row>
+      <ion-col size="7" >Spada lunga</ion-col>
+      <ion-col >{{ 1*fomipot2 +3 }} </ion-col>
+  </ion-row>
+	<ion-row>
+      <ion-col size="7" >Pugnale da lancio</ion-col>
+      <ion-col >{{ 1*folapot2 +1 }} </ion-col>
+	</ion-row>
+	<ion-row>
+      <ion-col size="7" >Balestra</ion-col>
+      <ion-col >{{ treti2 +1 }} </ion-col>
+	</ion-row>
+
+		<ion-row style="align-items: center;">
+			<ion-col ><hr/></ion-col>
+			<ion-col size="6" style="color:#FFFFFF; text-align: center; font-size: 1.1em;">Armi da Fuoco</ion-col>
+			<ion-col ><hr/></ion-col>
+		</ion-row>
+
+    <ion-row *ngIf="fuoco > 0">
+        <ion-col size="7" >Revolver/Pistola leggera</ion-col>
+        <ion-col >{{ trefuoco2  }} </ion-col>
+  	</ion-row>
+  	<ion-row *ngIf="fuoco > 0">
+        <ion-col size="7" >Revolver/Pistola pesante</ion-col>
+        <ion-col >{{ trefuoco2 +1 }} </ion-col>
+  	</ion-row>
+  	<ion-row *ngIf="fuoco > 1">
+        <ion-col size="7" >Mitra leggero</ion-col>
+        <ion-col >{{ trefuoco2 +2 }} </ion-col>
+  	</ion-row>
+  	<ion-row *ngIf="fuoco > 2">
+        <ion-col size="7" >Mitra pesante/d'assalto</ion-col>
+        <ion-col >{{ trefuoco2 +3 }} </ion-col>
+  	</ion-row>
+
+    <ion-row style="align-items: center;">
+      <ion-col ><hr/></ion-col>
+      <ion-col size="6" style="color:#FFFFFF; text-align: center; font-size: 1.1em;">Rifugio</ion-col>
+      <ion-col ><hr/></ion-col>
+    </ion-row>
+    <ion-row >
+      <ion-col >{{rifugio}}</ion-col>
+    </ion-row>
+    <ion-row style="align-items: center;">
+      <ion-col ><hr/></ion-col>
+      <ion-col size="6" style="color:#FFFFFF; text-align: center; font-size: 1.1em;">Zona Player</ion-col>
+      <ion-col ><hr/></ion-col>
+    </ion-row>
+    <ion-row >
+      <ion-col >{{zona}}</ion-col>
+    </ion-row>
+
+
+		<ion-row style="align-items: center;" *ngIf="scheda.note != ''">
+			<ion-col ><hr/></ion-col>
+			<ion-col size="6" style="color:#FFFFFF; text-align: center; font-size: 1.1em;">Annotazioni</ion-col>
+			<ion-col ><hr/></ion-col>
+		</ion-row>
+		<ion-row >
+			<!-- <ion-col style="color:#FFFFFF; text-align: justify; font-size: 1.1em;">{{ scheda.note}}</ion-col> -->
+			<ion-col style="color:#FFFFFF; text-align: justify; font-size: 1.1em;"><span [innerHTML]="note"></span></ion-col>
+		</ion-row>
+    <ion-row style="align-items: center;" *ngIf="scheda.notemaster!= ''">
+			<ion-col ><hr/></ion-col>
+			<ion-col size="6" style="color:#FFFFFF; text-align: center; font-size: 1.1em;">Annotazioni oggetti</ion-col>
+			<ion-col ><hr/></ion-col>
+		</ion-row>
+		<ion-row >
+			<!-- <ion-col style="color:#FFFFFF; text-align: justify; font-size: 1.1em;">{{ scheda.note}}</ion-col> -->
+			<ion-col style="color:#FFFFFF; text-align: justify; font-size: 1.1em;"><span [innerHTML]="notemaster"></span></ion-col>
+		</ion-row>
+
+
+		<ion-row style="align-items: center;" *ngIf="leg!=0">
+			<ion-col size="3" ><hr/></ion-col>
+			<ion-col size="6" style="text-align: center;">Legami subiti</ion-col>
+			<ion-col ><hr/></ion-col>
+		</ion-row>
+		<ion-list color="dark"  class="master"  >
+			<ion-item *ngFor="let item of listalegami" style="background-color:#000000" class="master" color="dark">
+				<p style="color:#ff0000;">{{item.nomepg}} - Livello {{item.livello}} 
+					<span class="mymed"> ( {{item.dataultima}} )</span></p>
+		
+			   </ion-item>
+		  </ion-list>
+		<ion-row style="align-items: center;" *ngIf="legd!=0">
+			<ion-col size="3" ><hr/></ion-col>
+			<ion-col size="6" style="text-align: center;">Legami come domitor</ion-col>
+			<ion-col ><hr/></ion-col>
+		  </ion-row>
+		
+		  <ion-list color="dark" class="master"  >
+
+			<ion-item *ngFor="let item of listalegamidomitor" style="background-color:#000000" class="master" color="dark">
+		 
+				<p style="color:#ff0000;">{{item.nomepg}} - Livello {{item.livello}} 
+				<span class="mymed"> ( {{item.dataultima}} )</span></p>
+		 
+			</ion-item>
+		   </ion-list>
+
+	</ion-grid>
+
+
+
+
+
+
+
+
+
+
+
+
+</ion-content>

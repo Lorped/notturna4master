@@ -53,7 +53,9 @@ export class HomePage implements OnInit {
   godadi(){
     this.router.navigate(['dadi']);
   }
-  vedischeda(){}
+  vedischeda(){
+    this.router.navigate(['personaggio/'+this.pgscelto] );
+  }
   inviamessaggio(){}
   openbarcode(){}
   godiablerie(){}
