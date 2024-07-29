@@ -1,0 +1,26 @@
+<ion-header>
+
+  <ion-toolbar color="medium">
+    <ion-title>Invia Messaggio</ion-title>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content  color="dark" class="master" padding >
+
+	<form (ngSubmit)="invia()" #modificaForm="ngForm">
+		<ion-item class="master" color="dark">
+
+			<ion-textarea placeholder="Scrivi qui il messaggio.." type="text" rows="20" [(ngModel)]="messaggio" name="newmessaggio" autofocus style="font-size:1.3em;"></ion-textarea>
+		</ion-item>
+
+    <ion-row class="master" color="dark" >
+      <ion-col>
+        <ion-button class="submit-btn2" expand="full" shape="round" color="danger" type="submit" >Invia</ion-button>
+			</ion-col>
+    </ion-row>
+	
+	</form>
+	
+</ion-content>

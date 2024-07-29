@@ -56,7 +56,9 @@ export class HomePage implements OnInit {
   vedischeda(){
     this.router.navigate(['personaggio/'+this.pgscelto] );
   }
-  inviamessaggio(){}
+  inviamessaggio(){
+    this.router.navigate(['sendmessaggio/'+this.pgscelto] );
+  }
   openbarcode(){}
   godiablerie(){}
   golistaoggetti(){}
