@@ -14,6 +14,10 @@ const routes: Routes = [
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
+  {
+    path: 'dadi',
+    loadChildren: () => import('./dadi/dadi.module').then( m => m.DadiPageModule)
+  },
 ];
 
 @NgModule({

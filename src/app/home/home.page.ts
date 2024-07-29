@@ -50,7 +50,9 @@ export class HomePage implements OnInit {
 
   }
 
-  godadi(){}
+  godadi(){
+    this.router.navigate(['dadi']);
+  }
   vedischeda(){}
   inviamessaggio(){}
   openbarcode(){}
