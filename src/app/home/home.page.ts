@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 
 export class Utente {
@@ -25,9 +27,27 @@ export class HomePage implements OnInit {
 	oggetto = '';
 
 
-  constructor() { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
+
+    var url = 'https://www.roma-by-night.it/ionicPHP/utenti.php';
+      
+    this.listautenti = [];
+  
+    this.http.get<any>(url)
+    .subscribe( (res:any) => {
+      if (res != null) {
+        for (let i = 0; i < res.length; i++) {
+        let item = res[i];
+        let newutente = new Utente(item.nomepg, item.idutente);
+        this.listautenti.push(newutente);
+        }
+      }
+        // console.log(this.listautenti);
+    });
+  
+
   }
 
   godadi(){}
@@ -36,6 +56,9 @@ export class HomePage implements OnInit {
   openbarcode(){}
   godiablerie(){}
   golistaoggetti(){}
-  logoutx(){}
+
+  logoutx() {
+		this.router.navigate(['login']);
+	}
 
 }

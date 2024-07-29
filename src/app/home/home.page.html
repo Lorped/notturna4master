@@ -2,46 +2,73 @@
 
   <ion-toolbar color="medium">
     <ion-title>Narazione - Home</ion-title>
-	<!--
-	<ion-buttons end>
-      <button ion-button (click)="logoutx()">
-        <ion-icon name="log-out"></ion-icon>
-      </button>
+
+    <ion-buttons slot="primary">
+      <ion-button (click)="logoutx()">
+        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
-	-->
   </ion-toolbar>
 
 </ion-header>
 
 
-<ion-content padding color="dark">
-	<ion-list>
+<ion-content  class="master" color="dark" >
+
+	<ion-row class="master" color="dark" >
+		<ion-col>
+			<ion-button class="submit-btn2" expand="full" shape="round" color="danger" type="submit" (click)="godadi()">Fattore Aleatorio e Log Msg.</ion-button>
+		</ion-col>
+	</ion-row>
 
 
-		<button ion-item (click)="godadi()" style="color:#ffffff; background-color:#444444;" >
-		<ion-icon name="keypad" item-start color="danger"></ion-icon>Fattore Aleatorio e Log Msg.</button>
-
-		<ion-item style="background-color: #444444">
-			<ion-icon name="contact" item-start color="danger" ></ion-icon>
-			<ion-label>PG</ion-label>
-			<ion-select [(ngModel)]="pgscelto" name="pgscelto" style="max-width:85%;color:#ffffff;">
-					<ion-select-option  *ngFor="let pg of listautenti" value="{{pg.id}}" >{{pg.nomepg}}</ion-select-option>
-			</ion-select>
-
+	<ion-list color="dark" class="master">
+		<ion-item color="dark"  style="background-color: #444444">
+			<ion-icon name="person-outline" item-start color="danger" ></ion-icon> &nbsp;
+			<ion-select label="PG" [(ngModel)]="pgscelto" name="pgscelto" style="max-width:85%;color:#ffffff;" required>
+				<ion-select-option *ngFor="let pg of listautenti" value="{{pg.id}}" >{{pg.nomepg}}</ion-select-option>
+		  	</ion-select>
 		</ion-item>
-
-		<button ion-item (click)="vedischeda()" style="color:#ffffff; background-color:#444444;" >
-		<ion-icon name="eye" item-start color="danger"></ion-icon>Vedi scheda</button>
-		<button ion-item (click)="inviamessaggio()" style="color:#ffffff; background-color:#444444;" >
-		<ion-icon name="logo-whatsapp" item-start color="danger"></ion-icon>Invia messaggio</button>
-		<button ion-item (click)="openbarcode()" style="color:#ffffff; background-color:#444444;" >
-		<ion-icon name="qr-scanner" item-start color="danger"></ion-icon>Scan</button>
-    <button ion-item (click)="godiablerie()" style="color:#ffffff; background-color:#444444;" >
-		<ion-icon name="logo-freebsd-devil" item-start color="danger"></ion-icon>Diablerie</button>
-    <button ion-item (click)="golistaoggetti()" style="color:#ffffff; background-color:#444444;" >
-		<ion-icon name="list" item-start color="danger"></ion-icon>Lista Oggetti</button>
-
 	</ion-list>
+		
+	<ion-row class="master" color="dark" >
+		<ion-col>
+			<ion-button  color= "danger" class="submit-btn2" shape="round" size="full" type="submit" [disabled]="pgscelto==0" (click)="vedischeda()" >
+				<ion-icon name="eye-outline" color="medium" ></ion-icon> &nbsp;
+				Vedi scheda
+			</ion-button>
+		</ion-col>
+	</ion-row>
+	<ion-row class="master" color="dark" >
+		<ion-col>
+			<ion-button class="submit-btn3" shape="round" size="full" type="submit" [disabled]="pgscelto==0" (click)="inviamessaggio()" >
+				<ion-icon name="paper-plane-outline" color="medium" ></ion-icon> &nbsp;
+				Invia messaggio
+			</ion-button>
+		</ion-col>
+	</ion-row>
+
+	<ion-row class="master" color="dark" >
+		<ion-col>
+			<ion-button class="submit-btn2" expand="full" shape="round" color="danger" type="submit" (click)="openbarcode()">Scan</ion-button>
+		</ion-col>
+	</ion-row>
+
+	<ion-row class="master" color="dark" >
+		<ion-col>
+			<ion-button class="submit-btn2" expand="full" shape="round" color="danger" type="submit" (click)="godiablerie()">Diablerie</ion-button>
+		</ion-col>
+	</ion-row>
+
+	<ion-row class="master" color="dark" >
+		<ion-col>
+			<ion-button class="submit-btn2" expand="full" shape="round" color="danger" type="submit" (click)="golistaoggetti()">Lista Oggetti</ion-button>
+		</ion-col>
+	</ion-row>
+
+
+
+	
 
 
 
