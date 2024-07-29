@@ -26,6 +26,10 @@ const routes: Routes = [
     path: 'sendmessaggio/:id',
     loadChildren: () => import('./sendmessaggio/sendmessaggio.module').then( m => m.SendmessaggioPageModule)
   },
+  {
+    path: 'modifica/:id',
+    loadChildren: () => import('./modifica/modifica.module').then( m => m.ModificaPageModule)
+  },
 ];
 
 @NgModule({

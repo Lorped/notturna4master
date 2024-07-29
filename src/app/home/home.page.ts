@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
+import { AlertController } from '@ionic/angular';
 
 
 export class Utente {
@@ -14,6 +16,9 @@ export class Utente {
 
 }
 
+
+
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
@@ -21,13 +26,64 @@ export class Utente {
 })
 export class HomePage implements OnInit {
 
+  public barcodes: Barcode[] = [];
+  public isPermissionGranted = false;
+
   listautenti: Array<Utente> = [];
 	pgscelto = 0;
 	selected = '';
 	oggetto = '';
 
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router,  public alertController: AlertController) { 
+    this.initialstuff();
+  }
+  async initialstuff(){
+    const granted = await this.requestPermissions();
+    if (!granted) {
+      this.presentAlert();
+    }
+    
+    let { available } = await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
+ 
+    if (available == false ){
+      // alert("debug: module not available");
+      await BarcodeScanner.installGoogleBarcodeScannerModule();
+    } else {
+      // alert("debug: module available");
+    }
+    
+  }
+
+  async requestPermissions(): Promise<boolean> {
+    const { camera } = await BarcodeScanner.requestPermissions();
+    return camera === 'granted' || camera === 'limited';
+  }
+
+  async presentAlert(): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Permission denied',
+      message: 'Please grant camera permission to use the barcode scanner.',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
+  async openbarcode() {
+
+    // this.oggetto.id='504756580060';
+    // this.router.navigate(['/tabs/oggetto']);
+    this.barcodes = [];
+
+    const { barcodes } = await BarcodeScanner.scan();
+    this.barcodes.push(...barcodes);
+
+    // console.log('Barcode data', barcodes);
+    //var ll = this.barcodes.length;
+    this.oggetto=this.barcodes[0].rawValue;
+    this.router.navigate(['modifica/'+this.oggetto]);
+ 
+  }
 
   ngOnInit() {
 
@@ -59,7 +115,7 @@ export class HomePage implements OnInit {
   inviamessaggio(){
     this.router.navigate(['sendmessaggio/'+this.pgscelto] );
   }
-  openbarcode(){}
+
   godiablerie(){}
   golistaoggetti(){}
 
