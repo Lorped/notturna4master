@@ -1,0 +1,55 @@
+
+<ion-header>
+
+
+	<ion-toolbar color="medium">
+		<ion-buttons slot="start">
+			<ion-back-button default-href="home"></ion-back-button>
+		  </ion-buttons>
+	  <ion-title>Diablerie</ion-title>
+	</ion-toolbar>
+  
+  </ion-header>
+
+
+<ion-content padding class="master" color="dark">
+
+  <ion-list color="dark" class="master">
+		<ion-item color="dark"  style="background-color: #444444">
+			<ion-icon name="person-outline" item-start color="danger" ></ion-icon> &nbsp;
+			<ion-select label="Diablerista" [(ngModel)]="diablerista"  style="max-width:85%;color:#ffffff;" required>
+				<ion-select-option *ngFor="let pg of listautenti" value="{{pg.idutente}}" >{{pg.nomepg}}</ion-select-option>
+		  	</ion-select>
+		</ion-item>
+	</ion-list>
+
+
+
+  <p>
+
+
+    <ion-list color="dark" class="master">
+      <ion-item color="dark"  style="background-color: #444444">
+        <ion-icon name="sad-outline" item-start color="danger" ></ion-icon> &nbsp;
+        <ion-select label="Vittima" [(ngModel)]="vittima"  style="max-width:85%;color:#ffffff;" required>
+          <ion-select-option *ngFor="let pg of listautenti" value="{{pg.idutente}}" >{{pg.nomepg}}</ion-select-option>
+          </ion-select>
+      </ion-item>
+    </ion-list>
+
+
+
+
+
+<p>
+
+	<ion-row class="master" color="dark" >
+		<ion-col>
+			
+			<ion-button class="submit-btn2" expand="full" shape="round" color="danger" type="submit" (click)="effettuadiablerie()" [disabled]="vittima==0 || diablerista==0 || vittima==diablerista ">
+				<ion-icon item-start color="medium" ></ion-icon> &nbsp;
+				Effettua Diablerie</ion-button>
+		</ion-col>
+	</ion-row>
+
+</ion-content>

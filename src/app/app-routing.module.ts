@@ -38,6 +38,10 @@ const routes: Routes = [
     path: 'listaoggetti',
     loadChildren: () => import('./listaoggetti/listaoggetti.module').then( m => m.ListaoggettiPageModule)
   },
+  {
+    path: 'diablerie',
+    loadChildren: () => import('./diablerie/diablerie.module').then( m => m.DiableriePageModule)
+  },
 ];
 
 @NgModule({

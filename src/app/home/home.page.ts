@@ -120,7 +120,9 @@ export class HomePage implements OnInit {
     this.router.navigate(['sendmessaggio/'+this.pgscelto] );
   }
 
-  godiablerie(){}
+  godiablerie(){
+    this.router.navigate(['diablerie']);
+  }
   golistaoggetti(){
     this.router.navigate(['listaoggetti']);
   }
