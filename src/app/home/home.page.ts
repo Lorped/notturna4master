@@ -72,8 +72,8 @@ export class HomePage implements OnInit {
   async openbarcode() {
 
     /***** DEBUG ONLY  */
-    this.oggetto='504756580060';
-    this.router.navigate(['modifica/'+this.oggetto]);
+    // this.oggetto='504756580060';
+    // this.router.navigate(['modifica/'+this.oggetto]);
 
     /***** DEBUG ONLY  */
 
@@ -121,7 +121,9 @@ export class HomePage implements OnInit {
   }
 
   godiablerie(){}
-  golistaoggetti(){}
+  golistaoggetti(){
+    this.router.navigate(['listaoggetti']);
+  }
 
   logoutx() {
 		this.router.navigate(['login']);

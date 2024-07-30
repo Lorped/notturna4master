@@ -39,7 +39,7 @@ export class ModificaPage implements OnInit {
       this.myoggetto.oggetto = data.oggetto;
       this.myoggetto.condizioni = data.condizioni;
 
-      console.log(this.myoggetto);
+      //console.log(this.myoggetto);
 		});
   }
 
@@ -61,7 +61,7 @@ export class ModificaPage implements OnInit {
 
   edit(x: Condizione) {
     // this.navCtrl.push('EditcondPage', { "condizione": x });
-    console.log("edit x", x);
+    //console.log("edit x", x);
     this.router.navigate(['modifica/'+this.barcode+'/'+x.con.idcondizione]);
   }
 
