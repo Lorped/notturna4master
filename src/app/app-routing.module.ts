@@ -30,6 +30,10 @@ const routes: Routes = [
     path: 'modifica/:id',
     loadChildren: () => import('./modifica/modifica.module').then( m => m.ModificaPageModule)
   },
+  {
+    path: 'modifica/:id/:con',
+    loadChildren: () => import('./editcond/editcond.module').then( m => m.EditcondPageModule)
+  },
 ];
 
 @NgModule({

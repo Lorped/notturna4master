@@ -10,14 +10,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 
 import { PipesModule } from './pipes/pipes.module';
-import { TimesPipe } from './pipes/times.pipe';
+import { FullOggetto, Condizione, Con } from './global';
 
 
 
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, PipesModule ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, FullOggetto, Condizione, Con],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

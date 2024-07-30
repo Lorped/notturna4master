@@ -71,8 +71,12 @@ export class HomePage implements OnInit {
 
   async openbarcode() {
 
-    // this.oggetto.id='504756580060';
-    // this.router.navigate(['/tabs/oggetto']);
+    /***** DEBUG ONLY  */
+    this.oggetto='504756580060';
+    this.router.navigate(['modifica/'+this.oggetto]);
+
+    /***** DEBUG ONLY  */
+
     this.barcodes = [];
 
     const { barcodes } = await BarcodeScanner.scan();

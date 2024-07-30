@@ -1,0 +1,61 @@
+<ion-header>
+
+  <ion-toolbar color="medium">
+    <ion-buttons slot="start">
+      <ion-back-button default-href="../"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Condizione</ion-title>
+  </ion-toolbar>
+
+</ion-header>
+
+
+
+<ion-content padding class="master" color="dark">
+  <ion-list color="dark" class="master">
+
+  <ion-item color = "dark" *ngIf="condizione.con.tipocond=='A'" style="background-color: #444444">
+    <ion-select [(ngModel)]="newcond" name="newcond" style="max-width:85%;color:#ffffff;" label="Attributo" placeholder="{{condizione.cc}}">
+        <ion-select-option *ngFor="let x of condA; let i = index" value="{{i+1}}"  >{{x}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  
+  <ion-item color = "dark" *ngIf="condizione.con.tipocond=='D'">
+    <ion-select [(ngModel)]="newcond" name="newcond" style="max-width:85%;color:#ffffff;" label="Disciplina" placeholder="{{condizione.cc}}">
+        <ion-select-option *ngFor="let x of condD" value="{{x.iddisciplina}}"   >{{x.nomedisc}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item color = "dark" *ngIf="condizione.con.tipocond=='P'">
+    <ion-select [(ngModel)]="newcond" name="newcond" style="max-width:85%;color:#ffffff;" label="Potere" placeholder="{{condizione.cc}}">
+        <ion-select-option *ngFor="let x of condP" value="{{x.idpotere}}"   >{{x.nomepotere}}.{{x.livellopot}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item color = "dark" *ngIf="condizione.con.tipocond=='S'">
+    <ion-select [(ngModel)]="newcond" name="newcond" style="max-width:85%;color:#ffffff;" label="Skill" placeholder="{{condizione.cc}}">
+        <ion-select-option *ngFor="let x of condS" value="{{x.idskill}}"   >{{x.nomeskill}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  
+
+  <ion-item class="master" color = "dark" *ngIf="condizione.con.tipocond!='P'">
+    <ion-label stacked><p style="color:#ff0000;">Valore</p></ion-label>
+  </ion-item>
+  <ion-item class="master" color="dark">    
+    <ion-input type="number" [(ngModel)]="condizione.con.valcond" name="valcond"  min="1" max="9" required ></ion-input>
+  </ion-item>
+
+  <ion-item class="master" color="dark">
+      <ion-label stacked><p style="color:#ff0000;">Descrizione</p></ion-label>
+  </ion-item>
+  <ion-item class="master" color="dark">
+      <ion-textarea type="text" row="2" [(ngModel)]="condizione.con.descrX" name="descrizione" ></ion-textarea>
+  </ion-item>
+
+  <ion-row class="master" color="dark" >
+		<ion-col>
+			<ion-button class="submit-btn2" expand="full" shape="round" color="danger" type="submit" (click)="modifica()">Modifica</ion-button>
+		</ion-col>
+	</ion-row>
+
+  </ion-list>
+</ion-content>
