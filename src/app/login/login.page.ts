@@ -7,6 +7,7 @@ import { LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 import { CapacitorConfig } from '@capacitor/cli';
+import { FCM } from "@capacitor-community/fcm";
 
 import {
   ActionPerformed,
@@ -133,6 +134,10 @@ export class LoginPage implements OnInit {
         //alert('Push action performed: ' + JSON.stringify(notification));
       },
     );
+
+    FCM.subscribeTo({ topic: 'master' })
+      .then(r => console.log(`subscribed to topic`))
+      .catch(err => console.log(err));
 
     this.router.navigate(['home']);
 
