@@ -18,6 +18,13 @@ export class Utente {
 
 
 
+export class Clan {
+  idclan = 0;
+  nomeclan = '';
+}
+
+
+
 
 @Component({
   selector: 'app-home',
@@ -25,6 +32,9 @@ export class Utente {
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+
+  clan: Array<Clan> = [];
+  clanscelto = 0;
 
   public barcodes: Barcode[] = [];
   public isPermissionGranted = false;
@@ -108,6 +118,10 @@ export class HomePage implements OnInit {
     });
   
 
+    this.http.get('https://www.roma-by-night.it/Notturna2/wsPHP/getregistra.php' ).subscribe( (data:any) => {
+      this.clan = data.clan;
+    });
+
   }
 
   godadi(){
@@ -130,5 +144,9 @@ export class HomePage implements OnInit {
   logoutx() {
 		this.router.navigate(['login']);
 	}
+
+  inviamessaggioclan(){
+    this.router.navigate(['sendmsgclan/'+this.clanscelto] );
+  }
 
 }

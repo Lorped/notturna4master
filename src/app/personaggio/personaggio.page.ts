@@ -104,6 +104,7 @@ export class PersonaggioPage implements OnInit {
 	note:	string = '';
   notemaster:	string = '';
 
+  amalgame: number = 0;
 	rituali:	number = 0;
 	forza:		number = 0;
 	rissa:		number = 0;
@@ -245,6 +246,12 @@ export class PersonaggioPage implements OnInit {
     					    break;
   					    }
 				      }
+              for (var j = 0; j < this.myskill.length; j++) {
+                if ( this.myskill[j].tipologia==12)  {
+                  this.amalgame=1;
+                  break;
+                }
+              }
 
               this.rp = Math.floor ( this.scheda['attutimento'] / 2 ) ;
 

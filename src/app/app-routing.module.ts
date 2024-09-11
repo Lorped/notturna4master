@@ -42,6 +42,10 @@ const routes: Routes = [
     path: 'diablerie',
     loadChildren: () => import('./diablerie/diablerie.module').then( m => m.DiableriePageModule)
   },
+  {
+    path: 'sendmsgclan/:id',
+    loadChildren: () => import('./sendmsgclan/sendmsgclan.module').then( m => m.SendmsgclanPageModule)
+  },
 ];
 
 @NgModule({

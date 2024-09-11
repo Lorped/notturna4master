@@ -71,6 +71,24 @@
 		</ion-col>
 	</ion-row>
 
+	<ion-list color="dark" class="master">
+		<ion-item color="dark"  style="background-color: #444444">
+			<ion-icon name="people-outline" item-start color="danger" ></ion-icon> &nbsp;
+			<ion-select label="Clan" [(ngModel)]="clanscelto" name="clanscelto" style="max-width:85%;color:#ffffff;" required>
+				<ion-select-option *ngFor="let c of clan" value="{{c.idclan}}" >{{c.nomeclan}}</ion-select-option>
+		  	</ion-select>
+		</ion-item>
+	</ion-list>
+
+	<ion-row class="master" color="dark" >
+		<ion-col>
+			<ion-button class="submit-btn3" shape="round" size="full" type="submit" [disabled]="clanscelto==0" (click)="inviamessaggioclan()" >
+				<ion-icon name="paper-plane-outline" color="medium" ></ion-icon> &nbsp;
+				Invia messaggio al Clan
+			</ion-button>
+		</ion-col>
+	</ion-row>
+
 
 
 	
