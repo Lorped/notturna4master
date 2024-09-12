@@ -134,6 +134,9 @@ export class PersonaggioPage implements OnInit {
   leg=0;
   legd=0;
 
+  xpspendibili = 0 ;
+  xpdisponibili = 0 ;
+
 
   constructor(public route: ActivatedRoute, public http: HttpClient) { 
     this.requestID = Number(this.route.snapshot.params['id']) ;
@@ -222,6 +225,22 @@ export class PersonaggioPage implements OnInit {
           //console.log(this.scheda);
 
           this.scheda['rd']=Math.floor((this.scheda['carisma']+this.scheda['intelligenza']+this.scheda['prontezza']+this.scheda['percezione']+this.scheda['fdv'])/5);
+
+
+          //CALCOLO XPT/XPS
+          if ( this.scheda.xp > 113 ) {
+            this.xpspendibili = 86 + ( this.scheda.xp - 113)/2 ;  
+          } else if ( this.scheda.xp > 32 ) {
+            this.xpspendibili = 32 + ( this.scheda.xp - 32)/3*2;
+          } else {
+            this.xpspendibili = this.scheda.xp;
+          }
+        
+          this.xpdisponibili = this.xpspendibili - this.scheda.xpspesi;
+            
+          this.xpspendibili = Math.round(this.xpspendibili*10)/10;
+          this.xpdisponibili = Math.round(this.xpdisponibili*10)/10;
+          //
 
 			    var link = 'https://www.roma-by-night.it/ionicPHP/skill.php'
 			   
