@@ -212,11 +212,14 @@ export class PersonaggioPage implements OnInit {
 			    //this.currentUser.fulldata = res;
 			    this.scheda = res;
           this.scheda['forza'] = Number (res['forza']);
+          this.scheda['destrezza'] = Number (res['destrezza']);
+          this.scheda['attutimento'] = Number (res['attutimento']);
           this.scheda['carisma'] = Number (res['carisma']);
-          this.scheda['intelligenza'] = Number (res['forza']);
+          this.scheda['persuasione'] = Number (res['persuasione']);
+          this.scheda['saggezza'] = Number (res['saggezza']);
+          this.scheda['intelligenza'] = Number (res['intelligenza']);
           this.scheda['prontezza'] = Number (res['prontezza']);
           this.scheda['percezione'] = Number (res['percezione']);
-          this.scheda['attutimento'] = Number (res['attutimento']);
           this.scheda['fdv'] = Number (res['fdv']);
           this.scheda['sete'] = Number (res['sete']);
           this.scheda['addsete'] = Number (res['addsete']);
