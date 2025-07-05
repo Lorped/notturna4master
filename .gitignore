@@ -63,6 +63,8 @@ yarn-error.log
 testem.log
 /typings
 
+android/app/release
+
 # System files
 .DS_Store
 Thumbs.db

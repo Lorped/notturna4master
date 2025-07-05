@@ -282,23 +282,27 @@ export class PersonaggioPage implements OnInit {
                 
                   
               this.pf = ( 3 + this.scheda['attutimento'] )*2;
-              for (let i = 0 ; i< this.myskill.length ; i++) {
-              if ( this.myskill[i].nomeskill == 'Schivare' ) {
-                this.pf +=  this.myskill[i].livello ;
-              }
-              if ( this.myskill[i].nomeskill == 'Robustezza' ) {
-                this.pf +=  this.myskill[i].livello ;
-                this.rp = Math.floor ( ( this.scheda['attutimento'] + this.myskill[i].livello ) / 2 ) ;
-                   // vedo se ha poteri attivi
-
-                for (let j = 0 ; j< this.poteri.length ; j++) {
-                    // console.log(this.myuser.poteri[j].poteri[k]);
-                  if (this.poteri[j].nomepotere=='Resilienza') this.pf += 5 + this.myskill[i].livello;
-                  if (this.poteri[j].nomepotere=='Sconfiggere le Debolezze') this.pf += 5 ; //perchè +5 da liv.1
-      
+            for (let i = 0 ; i< this.myskill.length ; i++) {  
+                if ( this.myskill[i].nomeskill == 'Schivare' ) {
+                  this.pf +=  this.myskill[i].livello ;
                 }
+                if ( this.myskill[i].nomeskill == 'Robustezza' ) {
+                  this.pf +=  this.myskill[i].livello ;
+                  this.rp = Math.floor ( ( this.scheda['attutimento'] + this.myskill[i].livello ) / 2 ) ;
+                    // vedo se ha poteri attivi
 
-              }
+                  for (let j = 0 ; j< this.poteri.length ; j++) {
+                      // console.log(this.myuser.poteri[j].poteri[k]);
+                    if (this.poteri[j].nomepotere=='Resilienza') this.pf += 5 + this.myskill[i].livello;
+                    if (this.poteri[j].nomepotere=='Sconfiggere le Debolezze') this.pf += 5 ; //perchè +5 da liv.1
+        
+                  }
+
+                }
+                if ( this.myskill[i].nomeskill == 'Nove Vite' ) {
+                  this.pf +=  10;
+                }
+                //console.log(this.myskill[i].nomeskill);
             }
 
 
