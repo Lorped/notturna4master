@@ -32,7 +32,8 @@
     "@capacitor/splash-screen": "^7.0.0",
     "@capacitor/status-bar": "^7.0.0",
     "@capawesome/capacitor-android-edge-to-edge-support": "^7.2.3",
-    "@ionic/angular": "^8.7.3",
+    "@ionic/angular": "^8.8.16",
+    "@ionic/angular-server": "^8.8.16",
     "@ionic/core": "^8.7.3",
     "font-awesome": "^4.7.0",
     "ionicons": "^7.0.0",
@@ -41,11 +42,6 @@
     "zone.js": "~0.15.1"
   },
   "devDependencies": {
-    "@angular-eslint/builder": "^18.0.0",
-    "@angular-eslint/eslint-plugin": "^18.0.0",
-    "@angular-eslint/eslint-plugin-template": "^18.0.0",
-    "@angular-eslint/schematics": "^18.0.0",
-    "@angular-eslint/template-parser": "^18.0.0",
     "@angular/build": "^22.1.2",
     "@angular/cli": "^22.1.2",
     "@angular/compiler-cli": "^22.1.0",
