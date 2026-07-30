@@ -1,32 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FeedService, FeedItem } from '../feed.service';
 import { HttpClient } from '@angular/common/http';
 
-
 @Component({
-    selector: 'app-dadi',
-    templateUrl: './dadi.page.html',
-    styleUrls: ['./dadi.page.scss'],
-    standalone: false
+  selector: 'app-dadi',
+  templateUrl: './dadi.page.html',
+  styleUrls: ['./dadi.page.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class DadiPage implements OnInit {
-
   tiridado: Array<FeedItem> = [];
 
-  constructor(private feed: FeedService, private http: HttpClient) { }
+  constructor(private feed: FeedService, private http: HttpClient) {}
 
   ngOnInit() {
     this.loadDadi();
   }
 
   loadDadi() {
-    this.feed.getDadi(-1).subscribe(
-      (allFeeds: any)  => {
-        //console.log ("allf", allFeeds);
-        this.tiridado = allFeeds;
-      });
+    this.feed.getDadi(-1).subscribe((allFeeds: any) => {
+      //console.log ("allf", allFeeds);
+      this.tiridado = allFeeds;
+    });
 
-  // console.log(this.tiridado)
+    // console.log(this.tiridado)
   }
 
   handleRefresh(event: any) {
@@ -36,19 +34,16 @@ export class DadiPage implements OnInit {
     }, 2000);
   }
 
-  tiraildado(){
+  tiraildado() {
+    console.log('here');
 
-    console.log("here");
-
-    this.http.post<any>('https://www.roma-by-night.it/ionicPHP/lanciadado.php', {
-      userid: 0
-    }).subscribe(
-      data => {
+    this.http
+      .post<any>('https://www.roma-by-night.it/ionicPHP/lanciadado.php', {
+        userid: 0,
+      })
+      .subscribe((data) => {
         //console.log ('data :' , data);
         this.loadDadi();
-    });
-
-
-	}
-
+      });
+  }
 }

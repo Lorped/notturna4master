@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { AlertController } from '@ionic/angular';
-
 
 export class Utente {
   nomepg = '';
@@ -13,27 +12,21 @@ export class Utente {
     this.nomepg = nomepg;
     this.id = id;
   }
-
 }
-
-
 
 export class Clan {
   idclan = 0;
   nomeclan = '';
 }
 
-
-
-
 @Component({
-    selector: 'app-home',
-    templateUrl: './home.page.html',
-    styleUrls: ['./home.page.scss'],
-    standalone: false
+  selector: 'app-home',
+  templateUrl: './home.page.html',
+  styleUrls: ['./home.page.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class HomePage implements OnInit {
-
   clan: Array<Clan> = [];
   clanscelto = 0;
 
@@ -41,29 +34,32 @@ export class HomePage implements OnInit {
   public isPermissionGranted = false;
 
   listautenti: Array<Utente> = [];
-	pgscelto = 0;
-	selected = '';
-	oggetto = '';
+  pgscelto = 0;
+  selected = '';
+  oggetto = '';
 
-
-  constructor(private http: HttpClient, private router: Router,  public alertController: AlertController) { 
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    public alertController: AlertController
+  ) {
     this.initialstuff();
   }
-  async initialstuff(){
+  async initialstuff() {
     const granted = await this.requestPermissions();
     if (!granted) {
       this.presentAlert();
     }
-    
-    let { available } = await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
- 
-    if (available == false ){
+
+    let { available } =
+      await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
+
+    if (available == false) {
       // alert("debug: module not available");
       await BarcodeScanner.installGoogleBarcodeScannerModule();
     } else {
       // alert("debug: module available");
     }
-    
   }
 
   async requestPermissions(): Promise<boolean> {
@@ -81,7 +77,6 @@ export class HomePage implements OnInit {
   }
 
   async openbarcode() {
-
     /***** DEBUG ONLY  */
     // this.oggetto='504756580060';
     // this.router.navigate(['modifica/'+this.oggetto]);
@@ -95,59 +90,55 @@ export class HomePage implements OnInit {
 
     // console.log('Barcode data', barcodes);
     //var ll = this.barcodes.length;
-    this.oggetto=this.barcodes[0].rawValue;
-    this.router.navigate(['modifica/'+this.oggetto]);
- 
+    this.oggetto = this.barcodes[0].rawValue;
+    this.router.navigate(['modifica/' + this.oggetto]);
   }
 
   ngOnInit() {
-
     var url = 'https://www.roma-by-night.it/ionicPHP/utenti.php';
-      
+
     this.listautenti = [];
-  
-    this.http.get<any>(url)
-    .subscribe( (res:any) => {
+
+    this.http.get<any>(url).subscribe((res: any) => {
       if (res != null) {
         for (let i = 0; i < res.length; i++) {
-        let item = res[i];
-        let newutente = new Utente(item.nomepg, item.idutente);
-        this.listautenti.push(newutente);
+          let item = res[i];
+          let newutente = new Utente(item.nomepg, item.idutente);
+          this.listautenti.push(newutente);
         }
       }
-        // console.log(this.listautenti);
-    });
-  
-
-    this.http.get('https://www.roma-by-night.it/Notturna2/wsPHP/getregistra.php' ).subscribe( (data:any) => {
-      this.clan = data.clan;
+      // console.log(this.listautenti);
     });
 
+    this.http
+      .get('https://www.roma-by-night.it/Notturna2/wsPHP/getregistra.php')
+      .subscribe((data: any) => {
+        this.clan = data.clan;
+      });
   }
 
-  godadi(){
+  godadi() {
     this.router.navigate(['dadi']);
   }
-  vedischeda(){
-    this.router.navigate(['personaggio/'+this.pgscelto] );
+  vedischeda() {
+    this.router.navigate(['personaggio/' + this.pgscelto]);
   }
-  inviamessaggio(){
-    this.router.navigate(['sendmessaggio/'+this.pgscelto] );
+  inviamessaggio() {
+    this.router.navigate(['sendmessaggio/' + this.pgscelto]);
   }
 
-  godiablerie(){
+  godiablerie() {
     this.router.navigate(['diablerie']);
   }
-  golistaoggetti(){
+  golistaoggetti() {
     this.router.navigate(['listaoggetti']);
   }
 
   logoutx() {
-		this.router.navigate(['login']);
-	}
-
-  inviamessaggioclan(){
-    this.router.navigate(['sendmsgclan/'+this.clanscelto] );
+    this.router.navigate(['login']);
   }
 
+  inviamessaggioclan() {
+    this.router.navigate(['sendmsgclan/' + this.clanscelto]);
+  }
 }

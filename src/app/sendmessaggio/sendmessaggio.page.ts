@@ -1,53 +1,52 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-    selector: 'app-sendmessaggio',
-    templateUrl: './sendmessaggio.page.html',
-    styleUrls: ['./sendmessaggio.page.scss'],
-    standalone: false
+  selector: 'app-sendmessaggio',
+  templateUrl: './sendmessaggio.page.html',
+  styleUrls: ['./sendmessaggio.page.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class SendmessaggioPage implements OnInit {
-
-  requestID = 0 ;
+  requestID = 0;
   messaggio = '';
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) { 
-    this.requestID = Number(this.route.snapshot.params['id']) ;
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
+    this.requestID = Number(this.route.snapshot.params['id']);
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   isEmpty(value: any) {
-    return (value == null || (typeof value === "string" && value.trim().length === 0));
+    return (
+      value == null || (typeof value === 'string' && value.trim().length === 0)
+    );
   }
 
-  invia () {
-
-
-    
-  
+  invia() {
     //console.log(this.isEmpty(this.messaggio));
 
-    if ( this.isEmpty(this.messaggio) === true) {
+    if (this.isEmpty(this.messaggio) === true) {
       this.router.navigate(['home']);
       //console.log("vuoto");
     } else {
       var url = 'https://www.roma-by-night.it/ionicPHP/inviamessaggio.php';
 
-		
-      this.http.post<any>(url,  {
-        idutente: -1,
-        destinatario: this.requestID,
-        messaggio: this.messaggio
-      })
-      .subscribe(res =>  {    
-        this.router.navigate(['home']);
-      });
+      this.http
+        .post<any>(url, {
+          idutente: -1,
+          destinatario: this.requestID,
+          messaggio: this.messaggio,
+        })
+        .subscribe((res) => {
+          this.router.navigate(['home']);
+        });
     }
-    
-	}
-
+  }
 }
