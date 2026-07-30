@@ -4,9 +4,10 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-editcond',
-  templateUrl: './editcond.page.html',
-  styleUrls: ['./editcond.page.scss'],
+    selector: 'app-editcond',
+    templateUrl: './editcond.page.html',
+    styleUrls: ['./editcond.page.scss'],
+    standalone: false
 })
 export class EditcondPage implements OnInit {
 

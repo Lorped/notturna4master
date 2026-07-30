@@ -4,9 +4,10 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-listaoggetti',
-  templateUrl: './listaoggetti.page.html',
-  styleUrls: ['./listaoggetti.page.scss'],
+    selector: 'app-listaoggetti',
+    templateUrl: './listaoggetti.page.html',
+    styleUrls: ['./listaoggetti.page.scss'],
+    standalone: false
 })
 export class ListaoggettiPage implements OnInit {
 

@@ -3,9 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-sendmsgclan',
-  templateUrl: './sendmsgclan.page.html',
-  styleUrls: ['./sendmsgclan.page.scss'],
+    selector: 'app-sendmsgclan',
+    templateUrl: './sendmsgclan.page.html',
+    styleUrls: ['./sendmsgclan.page.scss'],
+    standalone: false
 })
 export class SendmsgclanPage implements OnInit {
 

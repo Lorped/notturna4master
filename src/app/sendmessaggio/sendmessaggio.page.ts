@@ -3,9 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-sendmessaggio',
-  templateUrl: './sendmessaggio.page.html',
-  styleUrls: ['./sendmessaggio.page.scss'],
+    selector: 'app-sendmessaggio',
+    templateUrl: './sendmessaggio.page.html',
+    styleUrls: ['./sendmessaggio.page.scss'],
+    standalone: false
 })
 export class SendmessaggioPage implements OnInit {
 

@@ -89,9 +89,10 @@ export class Legame {
 }
 
 @Component({
-  selector: 'app-personaggio',
-  templateUrl: './personaggio.page.html',
-  styleUrls: ['./personaggio.page.scss'],
+    selector: 'app-personaggio',
+    templateUrl: './personaggio.page.html',
+    styleUrls: ['./personaggio.page.scss'],
+    standalone: false
 })
 export class PersonaggioPage implements OnInit {
 

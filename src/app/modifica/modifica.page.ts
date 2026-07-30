@@ -5,9 +5,10 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 import { FullOggetto, Condizione } from '../global';
 
 @Component({
-  selector: 'app-modifica',
-  templateUrl: './modifica.page.html',
-  styleUrls: ['./modifica.page.scss'],
+    selector: 'app-modifica',
+    templateUrl: './modifica.page.html',
+    styleUrls: ['./modifica.page.scss'],
+    standalone: false
 })
 export class ModificaPage implements OnInit {
 

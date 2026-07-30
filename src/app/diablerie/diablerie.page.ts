@@ -14,9 +14,10 @@ export class Utente {
 }
 
 @Component({
-  selector: 'app-diablerie',
-  templateUrl: './diablerie.page.html',
-  styleUrls: ['./diablerie.page.scss'],
+    selector: 'app-diablerie',
+    templateUrl: './diablerie.page.html',
+    styleUrls: ['./diablerie.page.scss'],
+    standalone: false
 })
 export class DiableriePage implements OnInit {
 
