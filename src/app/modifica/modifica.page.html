@@ -15,56 +15,61 @@
 
 
   <ion-item class="master" color="dark">
-      <ion-label stacked><p style="color:#ff0000;">Nome</p></ion-label>
+    <ion-label stacked><p style="color:#ff0000;">Nome</p></ion-label>
   </ion-item>
   <ion-item class="master" color="dark">
     <ion-input type="text" [(ngModel)]="myoggetto.oggetto.nomeoggetto" name="nomeoggetto" autofocus placeholder="Inserire il nome"></ion-input>
-  </ion-item> 
-  <ion-item class="master" color="dark">
-      <ion-label stacked><p style="color:#ff0000;">Descrizione</p></ion-label>
-    </ion-item>
-    <ion-item class="master" color="dark">    
-      <ion-textarea type="text" row="2" [(ngModel)]="myoggetto.oggetto.descrizione" name="descrizione" placeholder="Inserire la descrizione"></ion-textarea>
   </ion-item>
-  <ion-row style="align-items: center;" *ngIf="myoggetto.condizioni">
-    <ion-col size="3" ><hr/></ion-col>
-    <ion-col size="6" style="text-align: center;">Condizioni</ion-col>
-    <ion-col ><hr/></ion-col>
-  </ion-row>
+  <ion-item class="master" color="dark">
+    <ion-label stacked><p style="color:#ff0000;">Descrizione</p></ion-label>
+  </ion-item>
+  <ion-item class="master" color="dark">
+    <ion-textarea type="text" row="2" [(ngModel)]="myoggetto.oggetto.descrizione" name="descrizione" placeholder="Inserire la descrizione"></ion-textarea>
+  </ion-item>
+  @if (myoggetto.condizioni) {
+    <ion-row style="align-items: center;">
+      <ion-col size="3" ><hr/></ion-col>
+      <ion-col size="6" style="text-align: center;">Condizioni</ion-col>
+      <ion-col ><hr/></ion-col>
+    </ion-row>
+  }
   <ion-list class="master" >
-    <ion-item-sliding style="background-color:#000000" *ngFor="let x of myoggetto.condizioni">
-      <ion-item class="master" (click)="edit(x)" color="dark">
-         <ion-label>
-           <h2 style="color:#ff0000;" *ngIf="x.con.tipocond != 'P'">{{x.cc}} {{x.con.valcond}}</h2>
-            <h2 style="color:#ff0000;" *ngIf="x.con.tipocond == 'P'">{{x.cc}}</h2>
-          <p>{{x.con.descrX}}</p>
-      </ion-label>
-      </ion-item>
-      <ion-item-options>
-        <ion-button color="medium" (click)="edit(x)">
-          <ion-icon name="create-outline"></ion-icon>
-          Edit
-        </ion-button>
-      </ion-item-options>
-      <ion-item-options side="start">
-        <ion-button color="danger" (click)="delete(x)">
-          <ion-icon name="trash-outline"></ion-icon>
-          Delete
-        </ion-button>
-      </ion-item-options>
-
-
-
-    </ion-item-sliding>
+    @for (x of myoggetto.condizioni; track x) {
+      <ion-item-sliding style="background-color:#000000">
+        <ion-item class="master" (click)="edit(x)" color="dark">
+          <ion-label>
+            @if (x.con.tipocond != 'P') {
+              <h2 style="color:#ff0000;">{{x.cc}} {{x.con.valcond}}</h2>
+            }
+            @if (x.con.tipocond == 'P') {
+              <h2 style="color:#ff0000;">{{x.cc}}</h2>
+            }
+            <p>{{x.con.descrX}}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item-options>
+          <ion-button color="medium" (click)="edit(x)">
+            <ion-icon name="create-outline"></ion-icon>
+            Edit
+          </ion-button>
+        </ion-item-options>
+        <ion-item-options side="start">
+          <ion-button color="danger" (click)="delete(x)">
+            <ion-icon name="trash-outline"></ion-icon>
+            Delete
+          </ion-button>
+        </ion-item-options>
+      </ion-item-sliding>
+    }
   </ion-list>
 
 
 
   <ion-row class="master" color="dark" >
-		<ion-col>
-			<ion-button class="submit-btn2" expand="full" shape="round" color="danger" type="submit" (click)="modifica()">Modifica</ion-button>
-		</ion-col>
-	</ion-row>
+    <ion-col>
+      <ion-button class="submit-btn2" expand="full" shape="round" color="danger" type="submit" (click)="modifica()">Modifica</ion-button>
+    </ion-col>
+  </ion-row>
 
 
 </ion-content>
