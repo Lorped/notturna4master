@@ -20,5 +20,14 @@ export class AuthserviceService {
     }));
   }
 
+
+   getlistcronache() {
+    return this.http.get('https://www.roma-by-night.it/Notturna2/wsPHP/getlistcronache.php' );
+  }
+
+  taum(userid: number) {
+    return this.http.get<any>('https://www.roma-by-night.it/ionicPHP/listtaum.php?id='+userid);
+  }
 }
 
+ 

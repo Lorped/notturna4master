@@ -3,15 +3,14 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { AlertController } from '@ionic/angular';
+import { AuthserviceService } from '../authservice.service';
+import { Cronaca } from '../global';
 
 export class Utente {
   nomepg = '';
-  id = 0;
+  idutente = 0;
+  IDcronaca = 0;
 
-  constructor(nomepg: string, id: number) {
-    this.nomepg = nomepg;
-    this.id = id;
-  }
 }
 
 export class Clan {
@@ -33,7 +32,10 @@ export class HomePage implements OnInit {
   public barcodes: Barcode[] = [];
   public isPermissionGranted = false;
 
+  listacronache: Array<Cronaca> = [];
   listautenti: Array<Utente> = [];
+  displayedUtenti: Array<Utente> = [];
+  selectedCronache: number[] = [];
   pgscelto = 0;
   selected = '';
   oggetto = '';
@@ -41,7 +43,8 @@ export class HomePage implements OnInit {
   constructor(
     private http: HttpClient,
     private router: Router,
-    public alertController: AlertController
+    public alertController: AlertController,
+    public authservice: AuthserviceService
   ) {
     this.initialstuff();
   }
@@ -99,14 +102,13 @@ export class HomePage implements OnInit {
 
     this.listautenti = [];
 
-    this.http.get<any>(url).subscribe((res: any) => {
-      if (res != null) {
-        for (let i = 0; i < res.length; i++) {
-          let item = res[i];
-          let newutente = new Utente(item.nomepg, item.idutente);
-          this.listautenti.push(newutente);
-        }
-      }
+    this.http.get<any>(url).subscribe((res: Array<Utente>) => {
+      this.listautenti = res;
+      this.listautenti.forEach(utente => {
+        utente.idutente = Number(utente.idutente);
+        utente.IDcronaca = Number(utente.IDcronaca);
+      });
+      this.applyFiltroCronaca();
       // console.log(this.listautenti);
     });
 
@@ -115,6 +117,42 @@ export class HomePage implements OnInit {
       .subscribe((data: any) => {
         this.clan = data.clan;
       });
+
+
+    this.authservice.getlistcronache().subscribe(
+      (data: any) => {
+        this.listacronache = data;
+        this.listacronache.forEach(cronaca => {
+          cronaca.idcronaca = Number(cronaca.idcronaca);
+        });
+      }
+    );
+
+  }
+
+  filterByCronaca(idcronaca: number): void {
+    this.pgscelto = 0;
+    idcronaca = Number(idcronaca);
+    const index = this.selectedCronache.indexOf(idcronaca);
+
+    if (index >= 0) {
+      this.selectedCronache.splice(index, 1);
+    } else {
+      this.selectedCronache.push(idcronaca);
+    }
+
+    this.applyFiltroCronaca();
+  }
+
+  private applyFiltroCronaca(): void {
+    if (!this.selectedCronache.length) {
+      this.displayedUtenti = [...this.listautenti];
+      return;
+    }
+
+    this.displayedUtenti = this.listautenti.filter(utente => this.selectedCronache.includes(utente.IDcronaca));
+
+    console.log('Displayed Utenti:', this.displayedUtenti);
   }
 
   godadi() {

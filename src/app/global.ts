@@ -39,3 +39,11 @@ export class FullOggetto {
     this.condizioni = [];
   }
 }
+
+@Injectable()
+export class Cronaca {
+  idcronaca = 0;
+  descrizione = '';
+}
+
+
