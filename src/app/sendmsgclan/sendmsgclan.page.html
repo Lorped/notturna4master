@@ -10,17 +10,17 @@
 </ion-header>
 
 
-<ion-content  color="dark" class="master" padding >
+<ion-content   padding >
 
 	<form (ngSubmit)="invia()" #modificaForm="ngForm">
-		<ion-item class="master" color="dark">
+		<ion-item >
 
 			<ion-textarea placeholder="Scrivi qui il messaggio.." type="text" rows="20" [(ngModel)]="messaggio" name="newmessaggio" autofocus style="font-size:1.3em;"></ion-textarea>
 		</ion-item>
 
-    <ion-row class="master" color="dark" >
+    <ion-row  >
       <ion-col>
-        <ion-button class="submit-btn2" expand="full" shape="round" color="danger" type="submit" >Invia</ion-button>
+        <ion-button expand="full" shape="round" color="danger" type="submit" >Invia</ion-button>
 			</ion-col>
     </ion-row>
 	

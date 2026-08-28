@@ -267,22 +267,30 @@ export class PersonaggioPage implements OnInit {
   }
 
   menops() {
-    var link =
-      'https://www.roma-by-night.it/ionicPHP/menops.php?id=' + this.requestID;
 
-    this.http.get(link).subscribe((res) => {
-      this.user['PScorrenti'] = -1 + this.user['PScorrenti'];
+    this.authentication.changeps(this.requestID, -1).subscribe(
+      (data: any) => {
+        console.log('PS decreased successfully:', data);
+        this.user.PScorrenti = this.user.PScorrenti - 1;
+      },
+      (error: any) => {
+        console.error('Error decreasing PS:', error);
+      }
+    );
 
-    });
   }
   piups() {
-    var link =
-      'https://www.roma-by-night.it/ionicPHP/piups.php?id=' + this.requestID;
+    this.authentication.changeps(this.requestID, 1).subscribe(
+      (data: any) => {
+        console.log('PS increased successfully:', data);
+        this.user.PScorrenti = this.user.PScorrenti + 1;
+      },
+      (error: any) => {
+        console.error('Error increasing PS:', error);
+      }
+    );
 
-    this.http.get(link).subscribe((res) => {
-      this.user['PScorrenti'] = 1 + this.user['PScorrenti'];
-
-    });
+    
   }
 
   loadPG() {

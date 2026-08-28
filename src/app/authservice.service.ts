@@ -19,7 +19,9 @@ export class AuthserviceService {
       return user;
     }));
   }
-
+  barcode(barcode: string) {
+    return this.http.get<any>('https://www.roma-by-night.it/ionicPHP/barcode-master.php?barcode=' + barcode);
+  }
 
    getlistcronache() {
     return this.http.get('https://www.roma-by-night.it/Notturna2/wsPHP/getlistcronache.php' );
@@ -27,6 +29,19 @@ export class AuthserviceService {
 
   taum(userid: number) {
     return this.http.get<any>('https://www.roma-by-night.it/ionicPHP/listtaum.php?id='+userid);
+  }
+
+
+  changefdv(userid: number, change: number) {
+    return this.http.get<any>('https://www.roma-by-night.it/ionicPHP/changefdv-master.php?id='+userid+'&change='+change);
+  }
+
+  getfdv(userid: number) {
+    return this.http.get<any>('https://www.roma-by-night.it/ionicPHP/getfdv.php?id='+userid);
+  }
+
+  changeps(userid: number, change: number) {
+    return this.http.get<any>('https://www.roma-by-night.it/ionicPHP/changeps-master.php?id='+userid+'&change='+change);
   }
 }
 

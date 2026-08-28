@@ -26,22 +26,7 @@ const routes: Routes = [
     path: 'sendmessaggio/:id',
     loadChildren: () => import('./sendmessaggio/sendmessaggio.module').then( m => m.SendmessaggioPageModule)
   },
-  {
-    path: 'modifica/:id',
-    loadChildren: () => import('./modifica/modifica.module').then( m => m.ModificaPageModule)
-  },
-  {
-    path: 'modifica/:id/:con',
-    loadChildren: () => import('./editcond/editcond.module').then( m => m.EditcondPageModule)
-  },
-  {
-    path: 'listaoggetti',
-    loadChildren: () => import('./listaoggetti/listaoggetti.module').then( m => m.ListaoggettiPageModule)
-  },
-  {
-    path: 'diablerie',
-    loadChildren: () => import('./diablerie/diablerie.module').then( m => m.DiableriePageModule)
-  },
+ 
   {
     path: 'sendmsgclan/:id',
     loadChildren: () => import('./sendmsgclan/sendmsgclan.module').then( m => m.SendmsgclanPageModule)

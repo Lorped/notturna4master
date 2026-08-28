@@ -12,7 +12,7 @@
 
 
 
-<ion-content  class="master" color="dark" >
+<ion-content   >
 
 
 
@@ -21,17 +21,17 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-row class="master" color="dark" >
+  <ion-row  >
     <ion-col>
       <ion-button class="submit-btn2" expand="full" shape="round" color="danger" type="submit" (click)="tiraildado()">Tira un dado</ion-button>
     </ion-col>
   </ion-row>
 
-  <ion-list color="dark" class="master">
+  <ion-list>
     @for (tiri of tiridado; track tiri) {
-      <ion-item  color="dark" class="master" >
+      <ion-item   >
         <ion-label class="ion-text-wrap" >
-          <p style="color: #707070">{{tiri.data}} {{tiri.ora}}</p>
+          <p> <ion-text color="medium">{{tiri.data}} {{tiri.ora}}</ion-text> </p>
           @if (tiri.dest =='+' ) {
             <div>{{tiri.pg}} {{tiri.testo}} </div>
           }
