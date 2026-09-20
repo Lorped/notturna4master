@@ -117,7 +117,11 @@ export class HomePage implements OnInit {
     this.barcodes.push(...barcodes);
 
     // console.log('Barcode data', barcodes);
-    this.oggetto.id = this.barcodes[0].rawValue;
+    const rawValue = this.barcodes[0]?.rawValue;
+    if (!rawValue) {
+      return;
+    }
+    this.oggetto.id = rawValue;
 
     if (this.oggetto.id.length > 12) {
       const newbarcode = this.oggetto.id.substr(-12);
