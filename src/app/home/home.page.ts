@@ -1,5 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
@@ -66,7 +71,6 @@ export class Clan {
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FormsModule,
     IonButton,
@@ -94,6 +98,7 @@ export class Clan {
   ],
 })
 export class HomePage implements OnInit {
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
   clan: Array<Clan> = [];
   clanscelto = 0;
 
@@ -197,7 +202,7 @@ export class HomePage implements OnInit {
       this.oggetto.R2 = data.R2;
       this.oggetto.esitoSI = data.esitoSI;
       this.oggetto.esitoNO = data.esitoNO;  
-
+      this.changeDetectorRef.markForCheck();
 
     });
   }
@@ -218,6 +223,7 @@ export class HomePage implements OnInit {
         utente.IDcronaca = Number(utente.IDcronaca);
       });
       this.applyFiltroCronaca();
+      this.changeDetectorRef.markForCheck();
       // console.log(this.listautenti);
     });
 
@@ -225,6 +231,7 @@ export class HomePage implements OnInit {
       .get('https://www.roma-by-night.it/Notturna2/wsPHP/getregistra.php')
       .subscribe((data: any) => {
         this.clan = data.clan;
+        this.changeDetectorRef.markForCheck();
       });
 
 
@@ -234,6 +241,7 @@ export class HomePage implements OnInit {
         this.listacronache.forEach(cronaca => {
           cronaca.idcronaca = Number(cronaca.idcronaca);
         });
+        this.changeDetectorRef.markForCheck();
       }
     );
 
@@ -291,6 +299,7 @@ export class HomePage implements OnInit {
         (data: any) => {
           //console.log('FDV changed successfully:', data);
           this.fdv = this.fdv + Number(change);
+          this.changeDetectorRef.markForCheck();
         },
         (error: any) => {
           console.error('Error changing FDV:', error);
@@ -307,6 +316,7 @@ export class HomePage implements OnInit {
         (data: any) => {
           //console.log('PS changed successfully:', data);
           this.pscorrenti = this.pscorrenti + Number(change);
+          this.changeDetectorRef.markForCheck();
         },
         (error: any) => {
           console.error('Error changing PS:', error);
@@ -326,6 +336,7 @@ export class HomePage implements OnInit {
         this.fdvmax = Number(data.fdvmax);
         this.pscorrenti = Number(data.PScorrenti);
         this.maxps = Number(data.maxps);
+        this.changeDetectorRef.markForCheck();
       },
       (error: any) => {
         console.error('Error retrieving FDV and PS data:', error);

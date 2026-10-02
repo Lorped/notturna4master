@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
@@ -23,7 +23,7 @@ import {
 } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 
-import { CapacitorConfig } from '@capacitor/cli';
+// import { CapacitorConfig } from '@capacitor/cli';
 import { FCM } from '@capacitor-community/fcm';
 
 import {
@@ -37,7 +37,6 @@ import {
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FormsModule,
     IonButton,
@@ -56,7 +55,7 @@ import {
     IonToolbar,
   ],
 })
-export class LoginPage implements OnInit {
+export class LoginPage  {
   username = '';
   userid = 0;
 
@@ -80,7 +79,6 @@ export class LoginPage implements OnInit {
     }
   }
 
-  ngOnInit() {}
 
   public login() {
     // console.log( this.registerCredentials.username );
@@ -92,7 +90,7 @@ export class LoginPage implements OnInit {
         this.registerCredentials.password
       )
       .subscribe(
-        (data: any) => {
+        () => {
           //save if required
           if (this.saveme.checked == true) {
             window.localStorage.setItem(
@@ -145,6 +143,7 @@ export class LoginPage implements OnInit {
       sound: 'notturna_sound',
     });
 
+    /*
     const config: CapacitorConfig = {
       plugins: {
         PushNotifications: {
@@ -152,7 +151,9 @@ export class LoginPage implements OnInit {
         },
       },
     };
+    */
 
+    
     PushNotifications.addListener('registration', (token: Token) => {
       //alert('Push registration success, token: ' + token.value);
     });
@@ -176,7 +177,7 @@ export class LoginPage implements OnInit {
     );
 
     FCM.subscribeTo({ topic: 'master' })
-      .then((r) => console.log(`subscribed to topic`))
+      .then(() => console.log(`subscribed to topic`))
       .catch((err) => console.log(err));
 
     this.router.navigate(['home']);

@@ -1,4 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { FeedService, FeedItem } from '../feed.service';
 import { HttpClient } from '@angular/common/http';
 import {
@@ -23,7 +28,6 @@ import {
   selector: 'app-dadi',
   templateUrl: './dadi.page.html',
   styleUrls: ['./dadi.page.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     IonBackButton,
     IonButton,
@@ -43,6 +47,7 @@ import {
   ],
 })
 export class DadiPage implements OnInit {
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
   tiridado: Array<FeedItem> = [];
 
   constructor(private feed: FeedService, private http: HttpClient) {}
@@ -55,6 +60,7 @@ export class DadiPage implements OnInit {
     this.feed.getDadi(-1).subscribe((allFeeds: any) => {
       //console.log ("allf", allFeeds);
       this.tiridado = allFeeds;
+      this.changeDetectorRef.markForCheck();
     });
 
     // console.log(this.tiridado)

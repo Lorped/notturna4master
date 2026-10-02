@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -20,7 +20,6 @@ import {
   selector: 'app-sendmsgclan',
   templateUrl: './sendmsgclan.page.html',
   styleUrls: ['./sendmsgclan.page.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FormsModule,
     IonBackButton,
@@ -36,25 +35,24 @@ import {
     IonToolbar,
   ],
 })
-export class SendmsgclanPage implements OnInit {
+export class SendmsgclanPage  {
   requestID = 0;
   messaggio = '';
 
-  constructor(
-    private http: HttpClient,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {
+  http = inject(HttpClient);
+  route = inject(ActivatedRoute);
+  router = inject(Router);
+
+  constructor() {
     this.requestID = Number(this.route.snapshot.params['id']);
   }
 
-  isEmpty(value: any) {
+  isEmpty(value: string) {
     return (
       value == null || (typeof value === 'string' && value.trim().length === 0)
     );
   }
 
-  ngOnInit() {}
 
   invia() {
     //console.log(this.isEmpty(this.messaggio));
@@ -66,15 +64,15 @@ export class SendmsgclanPage implements OnInit {
       console.log('spedito');
       this.router.navigate(['home']);
 
-      var url = 'https://www.roma-by-night.it/ionicPHP/inviamessaggioclan.php';
+      const url = 'https://www.roma-by-night.it/ionicPHP/inviamessaggioclan.php';
 
       this.http
-        .post<any>(url, {
+        .post(url, {
           idutente: -1,
           destinatario: this.requestID,
           messaggio: this.messaggio,
         })
-        .subscribe((res) => {
+        .subscribe(() => {
           this.router.navigate(['home']);
         });
     }

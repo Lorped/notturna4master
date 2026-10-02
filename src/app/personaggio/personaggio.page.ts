@@ -1,5 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { NgClass } from '@angular/common';
 import { ActivatedRoute } from '@angular/router'; 
 import { AuthserviceService } from '../authservice.service';
@@ -207,11 +212,28 @@ export class Legame {
   dataultima: string = '';
 }
 
+export interface BackendLegame {
+  target: Array<Legame>;
+  domitor: Array<Legame>;
+}
+
+export interface BackendUtente {
+  utente: User;
+  skill: Array<Skill>;
+  otherskill: Array<Skill>;
+  discipline: Array<Disciplina>;
+  background: Array<Background>;
+  alleati: Array<Alleato>;
+  contatti: Array<Contatto>;
+  taum: Array<ataum>;
+  necro: Array<anecro>;
+  rituali: Array<Rituale>;
+}
+
 @Component({
   selector: 'app-personaggio',
   templateUrl: './personaggio.page.html',
   styleUrls: ['./personaggio.page.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     NgClass,
     IonAccordion,
@@ -231,6 +253,7 @@ export class Legame {
   ],
 })
 export class PersonaggioPage implements OnInit {
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
   requestID = 0;
 
   user: User = new User();
@@ -265,30 +288,35 @@ export class PersonaggioPage implements OnInit {
   legd = 0;
 
 
+  public route = inject(ActivatedRoute);
+  public http = inject(HttpClient);
+  public authentication = inject(AuthserviceService);
 
-  constructor(public route: ActivatedRoute, public http: HttpClient, public authentication: AuthserviceService) {
+
+  constructor() {
   
     this.requestID = Number(this.route.snapshot.params['id']);
 
     //console.log("id= ", this.requestID);
 
-    var url =
+    const url =
       'https://www.roma-by-night.it/ionicPHP/getlegami.php?id=' +
       this.requestID;
-    this.http.get(url).subscribe((res: any) => {
+    this.http.get<BackendLegame>(url).subscribe((res: BackendLegame) => {
       //console.log(res);
       if (res.target != null) {
-        for (var i = 0; i < res.target.length; i++) {
+        for (let i = 0; i < res.target.length; i++) {
           this.listalegami[i] = res.target[i];
         }
         this.leg = 1;
       }
       if (res.domitor != null) {
-        for (var i = 0; i < res.domitor.length; i++) {
+        for (let i = 0; i < res.domitor.length; i++) {
           this.listalegamidomitor[i] = res.domitor[i];
         }
         this.legd = 1;
       }
+      this.changeDetectorRef.markForCheck();
 
       //console.log (this.listalegami);
       //console.log (this.listalegamidomitor);
@@ -304,11 +332,12 @@ export class PersonaggioPage implements OnInit {
   menops() {
 
     this.authentication.changeps(this.requestID, -1).subscribe(
-      (data: any) => {
-        console.log('PS decreased successfully:', data);
+      () => {
+        //console.log('PS decreased successfully:', data);
         this.user.PScorrenti = this.user.PScorrenti - 1;
+        this.changeDetectorRef.markForCheck();
       },
-      (error: any) => {
+      (error) => {
         console.error('Error decreasing PS:', error);
       }
     );
@@ -316,11 +345,12 @@ export class PersonaggioPage implements OnInit {
   }
   piups() {
     this.authentication.changeps(this.requestID, 1).subscribe(
-      (data: any) => {
-        console.log('PS increased successfully:', data);
+      () => {
+        //console.log('PS increased successfully:', data);
         this.user.PScorrenti = this.user.PScorrenti + 1;
+        this.changeDetectorRef.markForCheck();
       },
-      (error: any) => {
+      (error) => {
         console.error('Error increasing PS:', error);
       }
     );
@@ -329,10 +359,10 @@ export class PersonaggioPage implements OnInit {
   }
 
   loadPG() {
-    var link =
+    const link =
       'https://www.roma-by-night.it/ionicPHP/getuser.php?id=' + this.requestID;
 
-    this.http.get(link).subscribe((res: any) => {
+    this.http.get<BackendUtente>(link).subscribe((res: BackendUtente) => {
       //this.currentUser.fulldata = res;
       this.user = res.utente;
 
@@ -433,6 +463,7 @@ export class PersonaggioPage implements OnInit {
           this.userskill.taum = data[0].taum;
           this.userskill.necro = data[0].necro;
           this.userskill.rituali = data[0].rituali;
+          this.changeDetectorRef.markForCheck();
       });      
 
 
@@ -494,6 +525,8 @@ export class PersonaggioPage implements OnInit {
     this.treti2 = Math.ceil((3 + this.tiro) / 2);
 
     this.trefuoco2 = Math.ceil((3 + this.fuoco) / 2);
+
+    this.changeDetectorRef.markForCheck();
 
 
           
