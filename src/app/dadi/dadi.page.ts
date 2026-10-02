@@ -1,13 +1,46 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FeedService, FeedItem } from '../feed.service';
 import { HttpClient } from '@angular/common/http';
+import {
+  IonBackButton,
+  IonButton,
+  IonButtons,
+  IonCol,
+  IonContent,
+  IonHeader,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonRefresher,
+  IonRefresherContent,
+  IonRow,
+  IonText,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-dadi',
   templateUrl: './dadi.page.html',
   styleUrls: ['./dadi.page.scss'],
   changeDetection: ChangeDetectionStrategy.Eager,
-  standalone: false,
+  imports: [
+    IonBackButton,
+    IonButton,
+    IonButtons,
+    IonCol,
+    IonContent,
+    IonHeader,
+    IonItem,
+    IonLabel,
+    IonList,
+    IonRefresher,
+    IonRefresherContent,
+    IonRow,
+    IonText,
+    IonTitle,
+    IonToolbar,
+  ],
 })
 export class DadiPage implements OnInit {
   tiridado: Array<FeedItem> = [];

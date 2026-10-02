@@ -1,9 +1,26 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 import { AuthserviceService } from '../authservice.service';
 
 import { LoadingController } from '@ionic/angular';
+import {
+  IonButton,
+  IonCheckbox,
+  IonCol,
+  IonContent,
+  IonHeader,
+  IonInput,
+  IonInputPasswordToggle,
+  IonItem,
+  IonList,
+  IonLoading,
+  IonRow,
+  IonText,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 
 import { CapacitorConfig } from '@capacitor/cli';
@@ -21,7 +38,23 @@ import {
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   changeDetection: ChangeDetectionStrategy.Eager,
-  standalone: false,
+  imports: [
+    FormsModule,
+    IonButton,
+    IonCheckbox,
+    IonCol,
+    IonContent,
+    IonHeader,
+    IonInput,
+    IonInputPasswordToggle,
+    IonItem,
+    IonList,
+    IonLoading,
+    IonRow,
+    IonText,
+    IonTitle,
+    IonToolbar,
+  ],
 })
 export class LoginPage implements OnInit {
   username = '';

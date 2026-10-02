@@ -13,8 +13,8 @@ import { SendmessaggioPage } from './sendmessaggio.page';
     CommonModule,
     FormsModule,
     IonicModule,
+    SendmessaggioPage,
     SendmessaggioPageRoutingModule
   ],
-  declarations: [SendmessaggioPage]
 })
 export class SendmessaggioPageModule {}

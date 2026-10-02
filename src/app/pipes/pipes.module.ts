@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { TimesPipe } from './times.pipe';
 @NgModule({
-	declarations: [TimesPipe],
-	imports: [],
+	imports: [TimesPipe],
 	exports: [TimesPipe]
 })
 export class PipesModule {}

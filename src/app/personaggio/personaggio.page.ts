@@ -1,7 +1,24 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { NgClass } from '@angular/common';
 import { ActivatedRoute } from '@angular/router'; 
 import { AuthserviceService } from '../authservice.service';
+import {
+  IonAccordion,
+  IonAccordionGroup,
+  IonBackButton,
+  IonButtons,
+  IonCol,
+  IonContent,
+  IonGrid,
+  IonHeader,
+  IonItem,
+  IonLabel,
+  IonRow,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/angular/standalone';
+import { TimesPipe } from '../pipes/times.pipe';
 
 export class Background {
   public idback = 0;
@@ -195,7 +212,23 @@ export class Legame {
   templateUrl: './personaggio.page.html',
   styleUrls: ['./personaggio.page.scss'],
   changeDetection: ChangeDetectionStrategy.Eager,
-  standalone: false,
+  imports: [
+    NgClass,
+    IonAccordion,
+    IonAccordionGroup,
+    IonBackButton,
+    IonButtons,
+    IonCol,
+    IonContent,
+    IonGrid,
+    IonHeader,
+    IonItem,
+    IonLabel,
+    IonRow,
+    IonTitle,
+    IonToolbar,
+    TimesPipe,
+  ],
 })
 export class PersonaggioPage implements OnInit {
   requestID = 0;

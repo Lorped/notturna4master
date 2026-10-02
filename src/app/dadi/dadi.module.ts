@@ -13,8 +13,8 @@ import { DadiPage } from './dadi.page';
     CommonModule,
     FormsModule,
     IonicModule,
+    DadiPage,
     DadiPageRoutingModule
   ],
-  declarations: [DadiPage]
 })
 export class DadiPageModule {}

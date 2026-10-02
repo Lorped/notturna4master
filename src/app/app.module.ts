@@ -19,10 +19,10 @@ import { FullOggetto, Condizione, Con } from './global';
 
 
 @NgModule({
-  declarations: [AppComponent],
   bootstrap: [AppComponent],
   imports: [
     BrowserModule, 
+    AppComponent,
     IonicModule.forRoot(), 
     AppRoutingModule, 
     PipesModule 

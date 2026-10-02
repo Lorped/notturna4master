@@ -13,8 +13,8 @@ import { SendmsgclanPage } from './sendmsgclan.page';
     CommonModule,
     FormsModule,
     IonicModule,
+    SendmsgclanPage,
     SendmsgclanPageRoutingModule
   ],
-  declarations: [SendmsgclanPage]
 })
 export class SendmsgclanPageModule {}

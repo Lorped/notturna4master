@@ -8,16 +8,13 @@ import { PersonaggioPageRoutingModule } from './personaggio-routing.module';
 
 import { PersonaggioPage } from './personaggio.page';
 
-import { PipesModule } from '../pipes/pipes.module';
-
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    PersonaggioPage,
     PersonaggioPageRoutingModule,
-    PipesModule
   ],
-  declarations: [PersonaggioPage]
 })
 export class PersonaggioPageModule {}
