@@ -54,7 +54,6 @@ export class DadiPage implements OnInit {
   feed = inject(FeedService);
   http = inject(HttpClient);
 
-  constructor() {}
 
   ngOnInit() {
     this.loadDadi();
@@ -81,9 +80,7 @@ export class DadiPage implements OnInit {
     console.log('here');
 
     this.http
-      .post('https://www.roma-by-night.it/ionicPHP/lanciadado.php', {
-        userid: 0,
-      })
+      .get('https://www.roma-by-night.it/ionicPHP/lanciadado.php?userid=0')
       .subscribe(() => {
         //console.log ('data :' , data);
         this.loadDadi();
