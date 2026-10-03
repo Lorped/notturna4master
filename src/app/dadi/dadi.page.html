@@ -32,10 +32,10 @@
       <ion-item   >
         <ion-label class="ion-text-wrap" >
           <p> <ion-text color="medium">{{tiri.data}} {{tiri.ora}}</ion-text> </p>
-          @if (tiri.dest =='+' ) {
+          @if (tiri.dest ==='+' ) {
             <div>{{tiri.pg}} {{tiri.testo}} </div>
           }
-          @if (tiri.dest !='+' ) {
+          @if (tiri.dest !=='+' ) {
             <div>{{tiri.pg}} {{tiri.dest}} <br>{{tiri.testo}} </div>
           }
         </ion-label>

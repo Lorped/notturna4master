@@ -9,6 +9,15 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { AlertController } from '@ionic/angular';
+import { addIcons } from 'ionicons';
+import {
+  cameraOutline,
+  eyeOutline,
+  logOutOutline,
+  paperPlaneOutline,
+  peopleOutline,
+  personOutline,
+} from 'ionicons/icons';
 import {
   IonButton,
   IonButtons,
@@ -67,6 +76,10 @@ export class Clan {
   nomeclan = '';
 }
 
+export interface ClanResponse {
+  clan: Array<Clan>;
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
@@ -122,12 +135,20 @@ export class HomePage implements OnInit {
   fdv = 0;
   fdvmax = 0;
 
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    public alertController: AlertController,
-    public authservice: AuthserviceService
-  ) {
+  http = inject(HttpClient);
+  router = inject(Router);
+  alertController = inject(AlertController);
+  authservice: AuthserviceService = inject(AuthserviceService);
+
+  constructor() {
+    addIcons({
+      cameraOutline,
+      eyeOutline,
+      logOutOutline,
+      paperPlaneOutline,
+      peopleOutline,
+      personOutline,
+    });
     this.initialstuff();
   }
 
@@ -137,7 +158,7 @@ export class HomePage implements OnInit {
       this.presentAlert();
     }
 
-    let { available } =
+    const { available } =
       await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
 
     if (available == false) {
@@ -212,35 +233,29 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
-    var url = 'https://www.roma-by-night.it/ionicPHP/utenti.php';
+    const url = 'https://www.roma-by-night.it/ionicPHP/utenti.php';
 
     this.listautenti = [];
 
-    this.http.get<any>(url).subscribe((res: Array<Utente>) => {
-      this.listautenti = res;
-      this.listautenti.forEach(utente => {
-        utente.idutente = Number(utente.idutente);
-        utente.IDcronaca = Number(utente.IDcronaca);
-      });
+    this.http.get<Array<Utente>>(url).subscribe((res) => {
+      this.listautenti = res ?? [];
+
       this.applyFiltroCronaca();
       this.changeDetectorRef.markForCheck();
       // console.log(this.listautenti);
     });
 
     this.http
-      .get('https://www.roma-by-night.it/Notturna2/wsPHP/getregistra.php')
-      .subscribe((data: any) => {
+      .get<ClanResponse>('https://www.roma-by-night.it/Notturna2/wsPHP/getregistra.php')
+      .subscribe((data: ClanResponse) => {
         this.clan = data.clan;
         this.changeDetectorRef.markForCheck();
       });
 
 
     this.authservice.getlistcronache().subscribe(
-      (data: any) => {
+      (data) => {
         this.listacronache = data;
-        this.listacronache.forEach(cronaca => {
-          cronaca.idcronaca = Number(cronaca.idcronaca);
-        });
         this.changeDetectorRef.markForCheck();
       }
     );
@@ -295,16 +310,15 @@ export class HomePage implements OnInit {
 
   changefdv(change: number) {
     if (this.pgscelto > 0) {
-      this.authservice.changefdv(this.pgscelto, change).subscribe(
-        (data: any) => {
-          //console.log('FDV changed successfully:', data);
+      this.authservice.changefdv(this.pgscelto, change).subscribe({
+        next: () => {
           this.fdv = this.fdv + Number(change);
           this.changeDetectorRef.markForCheck();
         },
-        (error: any) => {
+        error: (error: unknown) => {
           console.error('Error changing FDV:', error);
-        }
-      );
+        },
+      });
     } else {
       console.warn('No character selected to change FDV.');
     }
@@ -312,16 +326,16 @@ export class HomePage implements OnInit {
   
   changeps(change: number) {
     if (this.pgscelto > 0) {
-      this.authservice.changeps(this.pgscelto, change).subscribe(
-        (data: any) => {
+      this.authservice.changeps(this.pgscelto, change).subscribe({
+        next: () => {
           //console.log('PS changed successfully:', data);
           this.pscorrenti = this.pscorrenti + Number(change);
           this.changeDetectorRef.markForCheck();
         },
-        (error: any) => {
+        error: (error: unknown) => {
           console.error('Error changing PS:', error);
-        }
-      );
+        },
+      });
     } else {
       console.warn('No character selected to change PS.');
     }
@@ -329,8 +343,8 @@ export class HomePage implements OnInit {
 
   checkfdv_ps() {
     // TO DO: Implement the logic to check FDV for the selected character
-    this.authservice.getfdv(this.pgscelto).subscribe(
-      (data: any) => {
+    this.authservice.getfdv(this.pgscelto).subscribe({
+      next: (data) => {
         //console.log('FDV and PS data:', data);
         this.fdv = Number(data.fdv);
         this.fdvmax = Number(data.fdvmax);
@@ -338,10 +352,10 @@ export class HomePage implements OnInit {
         this.maxps = Number(data.maxps);
         this.changeDetectorRef.markForCheck();
       },
-      (error: any) => {
+      error: (error: unknown) => {
         console.error('Error retrieving FDV and PS data:', error);
-      }
-    );
+      },
+    });
   }
 
 }

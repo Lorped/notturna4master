@@ -22,6 +22,7 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
+  RefresherCustomEvent,
 } from '@ionic/angular/standalone';
 
 @Component({
@@ -50,14 +51,17 @@ export class DadiPage implements OnInit {
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
   tiridado: Array<FeedItem> = [];
 
-  constructor(private feed: FeedService, private http: HttpClient) {}
+  feed = inject(FeedService);
+  http = inject(HttpClient);
+
+  constructor() {}
 
   ngOnInit() {
     this.loadDadi();
   }
 
   loadDadi() {
-    this.feed.getDadi(-1).subscribe((allFeeds: any) => {
+    this.feed.getDadi(-1).subscribe((allFeeds) => {
       //console.log ("allf", allFeeds);
       this.tiridado = allFeeds;
       this.changeDetectorRef.markForCheck();
@@ -66,7 +70,7 @@ export class DadiPage implements OnInit {
     // console.log(this.tiridado)
   }
 
-  handleRefresh(event: any) {
+  handleRefresh(event: RefresherCustomEvent) {
     setTimeout(() => {
       this.loadDadi();
       event.target.complete();
@@ -77,10 +81,10 @@ export class DadiPage implements OnInit {
     console.log('here');
 
     this.http
-      .post<any>('https://www.roma-by-night.it/ionicPHP/lanciadado.php', {
+      .post('https://www.roma-by-night.it/ionicPHP/lanciadado.php', {
         userid: 0,
       })
-      .subscribe((data) => {
+      .subscribe(() => {
         //console.log ('data :' , data);
         this.loadDadi();
       });

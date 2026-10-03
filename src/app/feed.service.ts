@@ -1,20 +1,31 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { map } from 'rxjs';
 
-export class FeedItem {
-	pg: string;
-	data: string;
-	ora: string;
-	testo: string;
-	dest: string;
+interface DadiResponse {
+  status: number | string;
+  post?: FeedItem | FeedItem[] | null;
+}
 
-	constructor(pg: string, data: string, ora: string, testo: string, dest: string) {
+export class FeedItem {
+  pg: string;
+  data: string;
+  ora: string;
+  testo: string;
+  dest: string;
+
+  constructor(
+    pg: string,
+    data: string,
+    ora: string,
+    testo: string,
+    dest: string
+  ) {
     this.pg = pg;
-	  this.data = data;
+    this.data = data;
     this.ora = ora;
     this.testo = testo;
-	this.dest = dest;
+    this.dest = dest;
   }
 }
 
@@ -22,39 +33,35 @@ export class FeedItem {
   providedIn: 'root'
 })
 export class FeedService {
-
-  constructor(public http: HttpClient) { }
+  private readonly http = inject(HttpClient);
 
   public getDadi(userid: number) {
-    var url = 'https://www.roma-by-night.it/ionicPHP/dadi.php?last=0&userid=-1';
+    const url = `https://www.roma-by-night.it/ionicPHP/dadi.php?last=0&userid=${userid}`;
 
-	var tirididado: Array<FeedItem> = [];
+    return this.http.get<DadiResponse>(url).pipe(
+      map((response): FeedItem[] => {
+        const status = Number(response.status);
 
-	return this.http.get(url).pipe(
-    map( (res: any ) => {
-		let status = res['status'];
-		if ( status != 0 ) {
-		  var objects = res['post'];
-			if ( status == 1 ) {
-				let newFeedItem = new FeedItem(objects.pg, objects.data, objects.ora, objects.testo, objects.dest);
-				tirididado.push(newFeedItem);
-			} else {
-				var num=objects.length;
-				// console.log ("num ", num );
-				// console.log ("status ", status );
-  				for (let i = 0; i < num; i++) {
-   				let item = objects[i];
-   				let newFeedItem = new FeedItem(item.pg, item.data, item.ora, item.testo, item.dest);
-   				tirididado.push(newFeedItem);
-	   		}
-		}
-        // console.log( "feed tiridado= ", tirididado);
-      	return tirididado;
-			
-	}
-    return null;
-    }));
+        if (!Number.isFinite(status)) {
+          throw new Error('Invalid status in dadi response');
+        }
+
+        if (status === 0) {
+          return [];
+        }
+
+        if (response.post == null) {
+          throw new Error(`Missing post in dadi response for status ${status}`);
+        }
+
+        const posts = Array.isArray(response.post)
+          ? response.post
+          : [response.post];
+        return posts.map(
+          ({ pg, data, ora, testo, dest }) =>
+            new FeedItem(pg, data, ora, testo, dest)
+        );
+      })
+    );
   }
-
-
 }

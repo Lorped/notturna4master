@@ -38,7 +38,7 @@
 
   <ion-row >
     <ion-col>
-      <ion-button  color= "danger"  shape="round" size="full" type="submit" [disabled]="pgscelto==0" (click)="vedischeda()" >
+      <ion-button  color= "danger"  shape="round" size="full" type="submit" [disabled]="pgscelto===0" (click)="vedischeda()" >
         <ion-icon name="eye-outline" color="medium" ></ion-icon> &nbsp;
         Vedi scheda
       </ion-button>
@@ -46,7 +46,7 @@
   </ion-row>
   <ion-row  >
     <ion-col>
-      <ion-button shape="round" size="full" type="submit" [disabled]="pgscelto==0" (click)="inviamessaggio()" >
+      <ion-button shape="round" size="full" type="submit" [disabled]="pgscelto===0" (click)="inviamessaggio()" >
         <ion-icon name="paper-plane-outline" color="medium" ></ion-icon> &nbsp;
         Invia messaggio
       </ion-button>
@@ -55,24 +55,24 @@
 
   <ion-row  >
     <ion-col size="5">
-      <ion-button  expand="full" color="warning" type="submit" [disabled]="pgscelto==0 || fdv<=0" (click)="changefdv(-1)">FDV -1</ion-button>
+      <ion-button  expand="full" color="warning" type="submit" [disabled]="pgscelto===0 || fdv<=0" (click)="changefdv(-1)">FDV -1</ion-button>
     </ion-col>
     <ion-col size="2" style="text-align:center; font-size: 1em; font-weight: bold;">
       {{fdv}} / {{fdvmax}}
     </ion-col>
     <ion-col size="5">
-      <ion-button  expand="full" color="success" type="submit" [disabled]="pgscelto==0 || fdv>=fdvmax" (click)="changefdv(1)">FDV +1</ion-button>
+      <ion-button  expand="full" color="success" type="submit" [disabled]="pgscelto===0 || fdv>=fdvmax" (click)="changefdv(1)">FDV +1</ion-button>
     </ion-col>
   </ion-row>
     <ion-row  >
     <ion-col size="5">
-      <ion-button  expand="full" color="warning" type="submit" [disabled]="pgscelto==0 || pscorrenti<=0" (click)="changeps(-1)">PS -1</ion-button>
+      <ion-button  expand="full" color="warning" type="submit" [disabled]="pgscelto===0 || pscorrenti<=0" (click)="changeps(-1)">PS -1</ion-button>
     </ion-col>
     <ion-col size="2" style="text-align:center; font-size: 1em; font-weight: bold;">
       {{pscorrenti}} / {{maxps}}
     </ion-col>
     <ion-col size="5">
-      <ion-button  expand="full" color="success" type="submit" [disabled]="pgscelto==0 || pscorrenti>=maxps" (click)="changeps(1)">PS +1</ion-button>
+      <ion-button  expand="full" color="success" type="submit" [disabled]="pgscelto===0 || pscorrenti>=maxps" (click)="changeps(1)">PS +1</ion-button>
     </ion-col>
   </ion-row>
 
@@ -123,7 +123,7 @@
 
   <ion-row  >
     <ion-col>
-      <ion-button  shape="round" size="full" type="submit" [disabled]="clanscelto==0" (click)="inviamessaggioclan()" >
+      <ion-button  shape="round" size="full" type="submit" [disabled]="clanscelto===0" (click)="inviamessaggioclan()" >
         <ion-icon name="paper-plane-outline" color="medium" ></ion-icon> &nbsp;
         Invia messaggio al Clan
       </ion-button>

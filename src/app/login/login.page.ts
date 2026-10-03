@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
@@ -64,12 +64,12 @@ export class LoginPage  {
   };
   registerCredentials = { username: '', password: '' };
 
-  constructor(
-    private router: Router,
-    private http: HttpClient,
-    private authentication: AuthserviceService,
-    private loadingCtrl: LoadingController
-  ) {
+  router = inject(Router);
+  http = inject(HttpClient);
+  authentication = inject(AuthserviceService);
+  loadingCtrl = inject(LoadingController);
+
+  constructor() {
     this.registerCredentials.username =
       window.localStorage.getItem('notturnauserid')!;
     this.registerCredentials.password =
@@ -110,7 +110,7 @@ export class LoginPage  {
 
           this.pushsetup();
         },
-        (error: any) => {
+        (error) => {
           this.loadingCtrl.dismiss();
           console.log(error);
           switch (error['status']) {
@@ -155,24 +155,24 @@ export class LoginPage  {
 
     
     PushNotifications.addListener('registration', (token: Token) => {
-      //alert('Push registration success, token: ' + token.value);
+      console.log('Push registration success, token: ' + token.value);
     });
 
-    PushNotifications.addListener('registrationError', (error: any) => {
+    PushNotifications.addListener('registrationError', (error) => {
       alert('Error on registration: ' + JSON.stringify(error));
     });
 
     PushNotifications.addListener(
       'pushNotificationReceived',
       (notification: PushNotificationSchema) => {
-        //alert('Push received: ' + JSON.stringify(notification));
+        console.log('Push received: ' + JSON.stringify(notification));
       }
     );
 
     PushNotifications.addListener(
       'pushNotificationActionPerformed',
       (notification: ActionPerformed) => {
-        //alert('Push action performed: ' + JSON.stringify(notification));
+        console.log('Push action performed: ' + JSON.stringify(notification));
       }
     );
 

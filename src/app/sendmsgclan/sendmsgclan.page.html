@@ -13,6 +13,33 @@
 <ion-content   padding >
 
 	<form (ngSubmit)="invia()" #modificaForm="ngForm">
+    <ion-row>
+      <ion-col>
+        <ion-text color="medium">
+          Seleziona le cronache a cui inviare il messaggio. Se non ne selezioni
+          nessuna, verrà inviato a tutte.
+        </ion-text>
+        <div>
+          @for (cronaca of cronache; track cronaca.idcronaca) {
+            <ion-chip
+              role="button"
+              tabindex="0"
+              [color]="cronacheSelezionate.includes(cronaca.idcronaca) ? 'danger' : 'medium'"
+              [attr.aria-pressed]="cronacheSelezionate.includes(cronaca.idcronaca)"
+              (click)="toggleCronaca(cronaca.idcronaca)"
+              (keydown)="handleCronacaKeydown($event, cronaca.idcronaca)">
+              {{ cronaca.descrizione }}
+            </ion-chip>
+          }
+        </div>
+        @if (erroreCaricamentoCronache) {
+          <ion-text color="danger" role="alert">
+            Non è stato possibile caricare le cronache. Riprova prima di inviare.
+          </ion-text>
+        }
+      </ion-col>
+    </ion-row>
+
 		<ion-item >
 
 			<ion-textarea placeholder="Scrivi qui il messaggio.." type="text" rows="20" [(ngModel)]="messaggio" name="newmessaggio" autofocus style="font-size:1.3em;"></ion-textarea>
@@ -20,7 +47,7 @@
 
     <ion-row  >
       <ion-col>
-        <ion-button expand="full" shape="round" color="danger" type="submit" >Invia</ion-button>
+        <ion-button expand="full" shape="round" color="danger" type="submit" [disabled]="!cronacheCaricate">Invia</ion-button>
 			</ion-col>
     </ion-row>
 	
