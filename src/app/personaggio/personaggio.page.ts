@@ -22,7 +22,7 @@ import {
   IonRow,
   IonTitle,
   IonToolbar,
-} from '@ionic/angular/standalone';
+} from '@ionic/angular';
 import { TimesPipe } from '../pipes/times.pipe';
 
 export class Background {

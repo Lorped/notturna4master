@@ -20,7 +20,7 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
-} from '@ionic/angular/standalone';
+} from '@ionic/angular';
 import { Router } from '@angular/router';
 
 // import { CapacitorConfig } from '@capacitor/cli';

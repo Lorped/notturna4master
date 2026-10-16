@@ -41,7 +41,7 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
-} from '@ionic/angular/standalone';
+} from '@ionic/angular';
 import { AuthserviceService } from '../authservice.service';
 import { Cronaca } from '../global';
 

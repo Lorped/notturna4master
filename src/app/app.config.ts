@@ -10,7 +10,7 @@ import {
   provideRouter,
   withPreloading,
 } from '@angular/router';
-import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
+import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular';
 
 import { routes } from './app.routes';
 import { FullOggetto, Condizione, Con } from './global';
