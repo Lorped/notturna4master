@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideZonelessChangeDetection } from '@angular/core';
 import {
   provideHttpClient,
   withInterceptorsFromDi,
@@ -17,7 +17,7 @@ import { FullOggetto, Condizione, Con } from './global';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection(),
+    provideZonelessChangeDetection(),
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

@@ -87,7 +87,7 @@ export class AuthserviceService {
   }
 
    getlistcronache() {
-     return this.http.get<Array<Cronaca>>(
+     return this.http.get<Cronaca[]>(
        'https://www.roma-by-night.it/Notturna2/wsPHP/getlistcronache.php'
      );
    }

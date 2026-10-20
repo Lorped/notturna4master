@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthserviceService } from '../authservice.service';
@@ -43,17 +43,16 @@ import {
 })
 export class SendmsgclanPage implements OnInit {
   requestID = 0;
-  messaggio = '';
-  cronache: Cronaca[] = [];
-  cronacheSelezionate: number[] = [];
-  cronacheCaricate = false;
-  erroreCaricamentoCronache = false;
+  messaggio = signal('');
+  cronache = signal<Cronaca[]>([]);
+  cronacheSelezionate = signal<number[]>([]);
+  cronacheCaricate = signal(false);
+  erroreCaricamentoCronache = signal(false);
 
   http = inject(HttpClient);
   route = inject(ActivatedRoute);
   router = inject(Router);
   authservice = inject(AuthserviceService);
-  changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor() {
     this.requestID = Number(this.route.snapshot.params['id']);
@@ -62,24 +61,27 @@ export class SendmsgclanPage implements OnInit {
   ngOnInit() {
     this.authservice.getlistcronache().subscribe({
       next: (cronache) => {
-        this.cronache = cronache.map((cronaca) => ({
-          ...cronaca,
-          idcronaca: Number(cronaca.idcronaca),
-        }));
-        this.cronacheCaricate = true;
-        this.changeDetectorRef.markForCheck();
+        this.cronache.set(
+          cronache.map((cronaca) => ({
+            ...cronaca,
+            idcronaca: Number(cronaca.idcronaca),
+          })),
+        );
+        this.cronacheCaricate.set(true);
       },
       error: (error: unknown) => {
         console.error('Errore nel caricamento delle cronache:', error);
-        this.erroreCaricamentoCronache = true;
+        this.erroreCaricamentoCronache.set(true);
       },
     });
   }
 
   toggleCronaca(idcronaca: number): void {
-    this.cronacheSelezionate = this.cronacheSelezionate.includes(idcronaca)
-      ? this.cronacheSelezionate.filter((id) => id !== idcronaca)
-      : [...this.cronacheSelezionate, idcronaca];
+    this.cronacheSelezionate.update((selezionate) =>
+      selezionate.includes(idcronaca)
+        ? selezionate.filter((id) => id !== idcronaca)
+        : [...selezionate, idcronaca],
+    );
   }
 
   handleCronacaKeydown(event: KeyboardEvent, idcronaca: number): void {
@@ -97,13 +99,10 @@ export class SendmsgclanPage implements OnInit {
 
 
   invia() {
-    //console.log(this.isEmpty(this.messaggio));
-
-    if (this.isEmpty(this.messaggio) === true) {
+    if (this.isEmpty(this.messaggio())) {
       this.router.navigate(['home']);
-      //console.log("vuoto");
     } else {
-      if (!this.cronacheCaricate) {
+      if (!this.cronacheCaricate()) {
         alert('Impossibile inviare il messaggio prima di caricare le cronache.');
         return;
       }
@@ -114,8 +113,8 @@ export class SendmsgclanPage implements OnInit {
         .post(url, {
           idutente: -1,
           destinatario: this.requestID,
-          messaggio: this.messaggio,
-          idcronaca: this.cronacheSelezionate,
+          messaggio: this.messaggio(),
+          idcronaca: this.cronacheSelezionate(),
         })
         .subscribe(() => {
           this.router.navigate(['home']);

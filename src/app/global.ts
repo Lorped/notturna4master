@@ -33,7 +33,7 @@ export class Condizione {
 @Injectable()
 export class FullOggetto {
   oggetto: Oggetto;
-  condizioni: Array<Condizione>;
+  condizioni: Condizione[];
   constructor ( ) {
     this.oggetto = new Oggetto;
     this.condizioni = [];

@@ -28,7 +28,7 @@
   </ion-row>
 
   <ion-list>
-    @for (tiri of tiridado; track tiri) {
+    @for (tiri of tiridado(); track tiri) {
       <ion-item   >
         <ion-label class="ion-text-wrap" >
           <p> <ion-text color="medium">{{tiri.data}} {{tiri.ora}}</ion-text> </p>

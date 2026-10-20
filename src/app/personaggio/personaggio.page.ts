@@ -1,10 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import {
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  inject,
-} from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { ActivatedRoute } from '@angular/router'; 
 import { AuthserviceService } from '../authservice.service';
@@ -54,7 +49,7 @@ export class Skill {
     public idskill = 0 ;
     public nomeskill = '';
     public livello = 0;
-    public subskill: Array<Subskill> = [];
+    public subskill: Subskill[] = [];
 }
 
 export class Potere  {
@@ -69,7 +64,7 @@ export class Disciplina {
     public nomedisc = '';
     public livello = 0;
     public focus = 0;
-    public poteri: Array<Potere> = [];
+    public poteri: Potere[] = [];
 }
 
 export class User  {
@@ -169,7 +164,7 @@ export class ataum  {
     public nometaum = '';
     public livello = 0;
     public focus = 0;
-    public poteri: Array<apottaum> = [ ]; 
+    public poteri: apottaum[] = [ ]; 
 }
 
 export class apotnecro  {
@@ -184,7 +179,7 @@ export class anecro  {
     public nomenecro = '';
     public livello = 0;
     public focus = 0;
-    public poteri: Array<apotnecro> = [];
+    public poteri: apotnecro[] = [];
 }
 
 export class Rituale  {
@@ -194,40 +189,40 @@ export class Rituale  {
 }
 
 export class Userskill {
-    public skill: Array<Skill> = [];
-    public otherskill: Array<Skill> = [];
-    public discipline: Array<Disciplina> = [];
-    public background: Array<Background> =[];
-    public alleati: Array<Alleato> =[];
-    public contatti: Array<Contatto> =[];
-    public taum: Array<ataum> = [];
-    public necro: Array<anecro> = [];
-    public rituali: Array<Rituale> = [];
+    public skill: Skill[] = [];
+    public otherskill: Skill[] = [];
+    public discipline: Disciplina[] = [];
+    public background: Background[] =[];
+    public alleati: Alleato[] =[];
+    public contatti: Contatto[] =[];
+    public taum: ataum[] = [];
+    public necro: anecro[] = [];
+    public rituali: Rituale[] = [];
     
 }
 
 export class Legame {
-  nomepg: string = '';
-  livello: number = 0;
-  dataultima: string = '';
+  nomepg = '';
+  livello = 0;
+  dataultima = '';
 }
 
 export interface BackendLegame {
-  target: Array<Legame>;
-  domitor: Array<Legame>;
+  target: Legame[];
+  domitor: Legame[];
 }
 
 export interface BackendUtente {
   utente: User;
-  skill: Array<Skill>;
-  otherskill: Array<Skill>;
-  discipline: Array<Disciplina>;
-  background: Array<Background>;
-  alleati: Array<Alleato>;
-  contatti: Array<Contatto>;
-  taum: Array<ataum>;
-  necro: Array<anecro>;
-  rituali: Array<Rituale>;
+  skill: Skill[];
+  otherskill: Skill[];
+  discipline: Disciplina[];
+  background: Background[];
+  alleati: Alleato[];
+  contatti: Contatto[];
+  taum: ataum[];
+  necro: anecro[];
+  rituali: Rituale[];
 }
 
 @Component({
@@ -253,109 +248,90 @@ export interface BackendUtente {
   ],
 })
 export class PersonaggioPage implements OnInit {
-  private readonly changeDetectorRef = inject(ChangeDetectorRef);
   requestID = 0;
 
-  user: User = new User();
-  userskill: Userskill = new Userskill();
-  
-  
-  forza = 0; 
-  rissa = 0;
-  mischia = 0;
-  lancio = 0;
-  tiro = 0;
-  fuoco = 0;
-  potenza = 0;
-  artigli = 0;
+  user = signal(new User());
+  userskill = signal(new Userskill());
 
-  fomipot2 = 0;  
-  foripot2 = 0;
-  folapot2 = 0;
-  treti2 = 0;
-  trefuoco2 = 0;
+  forza = computed(() => this.user().forza);
+  rissa = computed(() => this.livelloSkill(42));
+  mischia = computed(() => this.livelloSkill(43));
+  lancio = computed(() => this.livelloSkill(46));
+  tiro = computed(() => this.livelloSkill(45));
+  fuoco = computed(() => this.livelloSkill(44));
+  potenza = computed(() => {
+    const pot = this.userskill().discipline.find((xx) => xx.iddisciplina == 17);
+    return pot ? Number(pot.livello) : 0;
+  });
+  artigli = computed(() => {
+    const prot = this.userskill().discipline.find((xx) => xx.iddisciplina == 18);
+    return prot && prot.livello > 1 ? 1 : 0;
+  });
 
+  fomipot2 = computed(() =>
+    Math.ceil((this.forza() + this.mischia() + this.potenza()) / 2),
+  );
+  foripot2 = computed(() =>
+    Math.ceil((this.forza() + this.rissa() + this.potenza()) / 2),
+  );
+  folapot2 = computed(() =>
+    Math.ceil((this.forza() + this.lancio() + this.potenza()) / 2),
+  );
+  treti2 = computed(() => Math.ceil((3 + this.tiro()) / 2));
+  trefuoco2 = computed(() => Math.ceil((3 + this.fuoco()) / 2));
 
-
-
-  listalegami: Array<Legame> = [];
-  listalegamidomitor: Array<Legame> = [];
-
-
-  
-
-  leg = 0;
-  legd = 0;
-
+  listalegami = signal<Legame[]>([]);
+  listalegamidomitor = signal<Legame[]>([]);
 
   public route = inject(ActivatedRoute);
   public http = inject(HttpClient);
   public authentication = inject(AuthserviceService);
 
-
   constructor() {
-  
     this.requestID = Number(this.route.snapshot.params['id']);
-
-    //console.log("id= ", this.requestID);
 
     const url =
       'https://www.roma-by-night.it/ionicPHP/getlegami.php?id=' +
       this.requestID;
     this.http.get<BackendLegame>(url).subscribe((res: BackendLegame) => {
-      //console.log(res);
       if (res.target != null) {
-        for (let i = 0; i < res.target.length; i++) {
-          this.listalegami[i] = res.target[i];
-        }
-        this.leg = 1;
+        this.listalegami.set([...res.target]);
       }
       if (res.domitor != null) {
-        for (let i = 0; i < res.domitor.length; i++) {
-          this.listalegamidomitor[i] = res.domitor[i];
-        }
-        this.legd = 1;
+        this.listalegamidomitor.set([...res.domitor]);
       }
-      this.changeDetectorRef.markForCheck();
-
-      //console.log (this.listalegami);
-      //console.log (this.listalegamidomitor);
     });
-
-
   }
 
   ngOnInit() {
     this.loadPG();
   }
 
-  menops() {
+  private livelloSkill(idskill: number): number {
+    const skill = this.userskill().otherskill.find((xx) => xx.idskill == idskill);
+    return skill ? Number(skill.livello) : 0;
+  }
 
+  private changePS(delta: number) {
+    this.user.update((user) => ({ ...user, PScorrenti: user.PScorrenti + delta }));
+  }
+
+  menops() {
     this.authentication.changeps(this.requestID, -1).subscribe(
-      () => {
-        //console.log('PS decreased successfully:', data);
-        this.user.PScorrenti = this.user.PScorrenti - 1;
-        this.changeDetectorRef.markForCheck();
-      },
+      () => this.changePS(-1),
       (error) => {
         console.error('Error decreasing PS:', error);
       }
     );
-
   }
+
   piups() {
     this.authentication.changeps(this.requestID, 1).subscribe(
-      () => {
-        //console.log('PS increased successfully:', data);
-        this.user.PScorrenti = this.user.PScorrenti + 1;
-        this.changeDetectorRef.markForCheck();
-      },
+      () => this.changePS(1),
       (error) => {
         console.error('Error increasing PS:', error);
       }
     );
-
-    
   }
 
   loadPG() {
@@ -363,175 +339,71 @@ export class PersonaggioPage implements OnInit {
       'https://www.roma-by-night.it/ionicPHP/getuser.php?id=' + this.requestID;
 
     this.http.get<BackendUtente>(link).subscribe((res: BackendUtente) => {
-      //this.currentUser.fulldata = res;
-      this.user = res.utente;
+      const user = res.utente;
 
-      this.user['PScorrenti'] = Number(this.user['PScorrenti']);
-      this.user['forza'] = Number(this.user['forza']);
-      this.user['destrezza'] = Number(this.user['destrezza']);
-      this.user['attutimento'] = Number(this.user['attutimento']);
-      this.user['carisma'] = Number(this.user['carisma']);
-      this.user['persuasione'] = Number(this.user['persuasione']);
-      this.user['saggezza'] = Number(this.user['saggezza']);
-      this.user['prontezza'] = Number(this.user['prontezza']);
-      this.user['intelligenza'] = Number(this.user['intelligenza']);
-      this.user['percezione'] = Number(this.user['percezione']);
-
-      this.user['fdv'] = Number(this.user['fdv']);
-      this.user['fdvmax'] = Number(this.user['fdvmax']);
-      this.user['fama1'] = Number(this.user['fama1']);
-      this.user['fama2'] = Number(this.user['fama2']);
-      this.user['fama3'] = Number(this.user['fama3']);
-
-      this.user['xp'] = Number(this.user['xp']);
-      this.user['contanti'] = Number(this.user['contanti']);
-          
-      this.user['PScorrenti'] = Number(this.user['PScorrenti']);
-      this.user['maxps'] = Number(this.user['maxps']);
-
-      this.user['bonusrigen'] = Number(this.user['bonusrigen']);
-      this.user['rigen'] = Number(this.user['rigen']);
-
-      if (this.user.idlds == 21 ) {
-        this.user.bonusdisc = Number (this.user.bonusdisc) + 1;
+      const numeric = [
+        'PScorrenti', 'forza', 'destrezza', 'attutimento', 'carisma',
+        'persuasione', 'saggezza', 'prontezza', 'intelligenza', 'percezione',
+        'fdv', 'fdvmax', 'fama1', 'fama2', 'fama3', 'xp', 'contanti',
+        'maxps', 'bonusrigen', 'rigen',
+      ] as const;
+      for (const key of numeric) {
+        user[key] = Number(user[key]);
       }
 
+      if (user.idlds == 21) {
+        user.bonusdisc = Number(user.bonusdisc) + 1;
+      }
 
-      //console.log(this.scheda);
-
-      this.user['rd'] = Math.floor(
-        (this.user['carisma'] +
-          this.user['intelligenza'] +
-          this.user['prontezza'] +
-          this.user['percezione'] +
-          this.user['fdv']) /
-          5
+      user.rd = Math.floor(
+        (user.carisma + user.intelligenza + user.prontezza + user.percezione + user.fdv) / 5
       );
 
+      const userskill = new Userskill();
+      userskill.skill = res.skill;
+      userskill.otherskill = res.otherskill;
+      userskill.discipline = res.discipline;
+      userskill.background = res.background;
+      userskill.alleati = res.alleati;
+      userskill.contatti = res.contatti;
 
-      this.userskill.skill = res.skill;
-      this.userskill.otherskill = res.otherskill;
-      this.userskill.discipline = res.discipline;
-      this.userskill.background = res.background;
-      this.userskill.alleati = res.alleati;
-      this.userskill.contatti = res.contatti;
-      //this.userskill.taum = res.taum;
-      //this.userskill.necro = res.necro;
-      
+      user.pf = (3 + user.attutimento) * 2;
+      user.rp = Math.floor(user.attutimento / 2);
 
-      this.user.pf = (3 + this.user['attutimento']) * 2;
-
-      this.user.rp = Math.floor(this.user['attutimento'] / 2 );
-
-      for (let i = 0; i < this.userskill.skill.length; i++) {
-        this.userskill.skill[i].livello = Number(this.userskill.skill[i].livello);
-      }
-      for (let i = 0; i < this.userskill.otherskill.length; i++) {
-        this.userskill.otherskill[i].livello = Number(this.userskill.otherskill[i].livello);  
-        if (this.userskill.otherskill[i].idskill == 47) {  //schivare
-          this.user.pf += this.userskill.otherskill[i].livello;
+      for (const skill of userskill.otherskill) {
+        skill.livello = Number(skill.livello);
+        if (skill.idskill == 47) { //schivare
+          user.pf += skill.livello;
         }
       }
 
-      const rob = this.userskill.discipline.find ( xx => xx.iddisciplina == 12 ); //robustezza
+      const rob = userskill.discipline.find((xx) => xx.iddisciplina == 12); //robustezza
 
-      if ( rob ) {
+      if (rob) {
         rob.livello = Number(rob.livello);
-        this.user.pf += rob.livello;
-        this.user.rp = Math.floor( (this.user['attutimento'] + rob.livello) / 2 );
+        user.pf += rob.livello;
+        user.rp = Math.floor((user.attutimento + rob.livello) / 2);
 
-        for ( let j= 0 ; j < rob.poteri.length ; j++) {
-          if (rob.poteri[j].idpotere == 70 ) { 
-            if (rob.focus > 0 ) { this.user.pf += Number(this.user.bonusdisc); }
-            this.user.pf += (5+rob.livello);
+        for (const potere of rob.poteri) {
+          if (potere.idpotere == 70) {
+            if (rob.focus > 0) { user.pf += Number(user.bonusdisc); }
+            user.pf += 5 + rob.livello;
           }
-          if (rob.poteri[j].idpotere == 74 ) { this.user.pf += 5;} //+5 sono nel potere precedente - che è prerequisito. focus contato una sola volta: la prima
+          if (potere.idpotere == 74) { user.pf += 5; } //+5 sono nel potere precedente - che è prerequisito. focus contato una sola volta: la prima
         }
-      }    
-
-      this.user['rd'] = Math.floor(
-        (this.user['carisma'] +
-          this.user['intelligenza'] +
-          this.user['prontezza'] +
-          this.user['percezione'] +
-          this.user['fdv']) /
-          5
-      );
-
-      this.authentication.taum(this.user.idutente).subscribe(
-        (data) => {
-          this.userskill.taum = data[0].taum;
-          this.userskill.necro = data[0].necro;
-          this.userskill.rituali = data[0].rituali;
-          this.changeDetectorRef.markForCheck();
-      });      
-
-
-          
-     
-
-      this.forza = this.user['forza'];
-
-    this.rissa = 0;
-    this.mischia = 0;
-    this.lancio = 0;
-    this.tiro = 0;
-    this.fuoco = 0;
-    this.potenza = 0;
-    this.artigli = 0;
-
-
-    for (let i = 0; i < this.userskill.otherskill.length; i++) {
-      if (this.userskill.otherskill[i].idskill == 42) {  //rissa
-        this.rissa = Number(this.userskill.otherskill[i].livello);
       }
-      if (this.userskill.otherskill[i].idskill == 43) {  //mischia
-        this.mischia = Number(this.userskill.otherskill[i].livello);
-      }
-      if (this.userskill.otherskill[i].idskill == 46) {  //lancio
-        this.lancio = Number(this.userskill.otherskill[i].livello);
-      }
-      if (this.userskill.otherskill[i].idskill == 45) {  //Armi da tiro
-        this.tiro = Number(this.userskill.otherskill[i].livello);
-      }
-      if (this.userskill.otherskill[i].idskill == 44) {  //Armi da fuoco
-        this.fuoco = Number(this.userskill.otherskill[i].livello);
-      }
-    }
-    const pot = this.userskill.discipline.find((xx) => xx.iddisciplina == 17); //potenza
-    if (pot) {
-      this.potenza = Number(pot.livello);
-    }
-    const prot = this.userskill.discipline.find((xx) => xx.iddisciplina == 18); //proteide
-    if (prot && prot.livello > 1) {
-      this.artigli = 1;
-    }  
 
-    this.forza = this.user['forza'];
+      this.user.set({ ...user });
+      this.userskill.set(userskill);
 
-    // console.log( "forza:" , this.forza);
-    // console.log( "rissa:" , this.rissa);
-    // console.log( "mischia:" , this.mischia);
-    //console.log( "lancio:" , this.lancio);
-    //console.log( "tiro:" , this.tiro);
-    //console.log( "fuoco:" , this.fuoco);
-    //console.log( "potenza:" , this.potenza);
-    //console.log( "artigli:" , this.artigli);
-
-    this.fomipot2 = Math.ceil((this.forza + this.mischia + this.potenza) / 2);
-    this.foripot2 = Math.ceil((this.forza + this.rissa + this.potenza) / 2);
-
-    this.folapot2 = Math.ceil((this.forza + this.lancio + this.potenza) / 2);
-    this.treti2 = Math.ceil((3 + this.tiro) / 2);
-
-    this.trefuoco2 = Math.ceil((3 + this.fuoco) / 2);
-
-    this.changeDetectorRef.markForCheck();
-
-
-          
+      this.authentication.taum(user.idutente).subscribe((data) => {
+        this.userskill.update((current) => ({
+          ...current,
+          taum: data[0].taum,
+          necro: data[0].necro,
+          rituali: data[0].rituali,
+        }));
+      });
     });
   }
-
-
 }

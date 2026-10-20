@@ -16,9 +16,9 @@
 <ion-content  >
 
   <ion-row  >
-      @for (item of listacronache; track item.idcronaca) {
+      @for (item of listacronache(); track item.idcronaca) {
         <ion-col size="3">
-          <ion-chip [color]="selectedCronache.includes(item.idcronaca) ? 'danger' : 'medium'" (click)="filterByCronaca(item.idcronaca)">
+          <ion-chip [color]="selectedCronache().includes(item.idcronaca) ? 'danger' : 'medium'" (click)="filterByCronaca(item.idcronaca)">
             {{item.descrizione}}
           </ion-chip>
         </ion-col>
@@ -29,7 +29,7 @@
     <ion-item >
       <ion-icon name="person-outline" item-start color="danger" ></ion-icon> &nbsp;
       <ion-select label="PG" [(ngModel)]="pgscelto" (ionChange)="checkfdv_ps()" name="pgscelto" style="max-width:85%;" required>
-        @for (pg of displayedUtenti; track pg) {
+        @for (pg of displayedUtenti(); track pg) {
           <ion-select-option value="{{pg.idutente}}" >{{pg.nomepg}}</ion-select-option>
         }
       </ion-select>
@@ -38,7 +38,7 @@
 
   <ion-row >
     <ion-col>
-      <ion-button  color= "danger"  shape="round" size="full" type="submit" [disabled]="pgscelto===0" (click)="vedischeda()" >
+      <ion-button  color= "danger"  shape="round" size="full" type="submit" [disabled]="pgscelto()===0" (click)="vedischeda()" >
         <ion-icon name="eye-outline" color="medium" ></ion-icon> &nbsp;
         Vedi scheda
       </ion-button>
@@ -46,7 +46,7 @@
   </ion-row>
   <ion-row  >
     <ion-col>
-      <ion-button shape="round" size="full" type="submit" [disabled]="pgscelto===0" (click)="inviamessaggio()" >
+      <ion-button shape="round" size="full" type="submit" [disabled]="pgscelto()===0" (click)="inviamessaggio()" >
         <ion-icon name="paper-plane-outline" color="medium" ></ion-icon> &nbsp;
         Invia messaggio
       </ion-button>
@@ -55,24 +55,24 @@
 
   <ion-row  >
     <ion-col size="5">
-      <ion-button  expand="full" color="warning" type="submit" [disabled]="pgscelto===0 || fdv<=0" (click)="changefdv(-1)">FDV -1</ion-button>
+      <ion-button  expand="full" color="warning" type="submit" [disabled]="pgscelto()===0 || fdv()<=0" (click)="changefdv(-1)">FDV -1</ion-button>
     </ion-col>
     <ion-col size="2" style="text-align:center; font-size: 1em; font-weight: bold;">
-      {{fdv}} / {{fdvmax}}
+      {{fdv()}} / {{fdvmax()}}
     </ion-col>
     <ion-col size="5">
-      <ion-button  expand="full" color="success" type="submit" [disabled]="pgscelto===0 || fdv>=fdvmax" (click)="changefdv(1)">FDV +1</ion-button>
+      <ion-button  expand="full" color="success" type="submit" [disabled]="pgscelto()===0 || fdv()>=fdvmax()" (click)="changefdv(1)">FDV +1</ion-button>
     </ion-col>
   </ion-row>
     <ion-row  >
     <ion-col size="5">
-      <ion-button  expand="full" color="warning" type="submit" [disabled]="pgscelto===0 || pscorrenti<=0" (click)="changeps(-1)">PS -1</ion-button>
+      <ion-button  expand="full" color="warning" type="submit" [disabled]="pgscelto()===0 || pscorrenti()<=0" (click)="changeps(-1)">PS -1</ion-button>
     </ion-col>
     <ion-col size="2" style="text-align:center; font-size: 1em; font-weight: bold;">
-      {{pscorrenti}} / {{maxps}}
+      {{pscorrenti()}} / {{maxps()}}
     </ion-col>
     <ion-col size="5">
-      <ion-button  expand="full" color="success" type="submit" [disabled]="pgscelto===0 || pscorrenti>=maxps" (click)="changeps(1)">PS +1</ion-button>
+      <ion-button  expand="full" color="success" type="submit" [disabled]="pgscelto()===0 || pscorrenti()>=maxps()" (click)="changeps(1)">PS +1</ion-button>
     </ion-col>
   </ion-row>
 
@@ -114,7 +114,7 @@
     <ion-item >
       <ion-icon name="people-outline" item-start color="danger" ></ion-icon> &nbsp;
       <ion-select label="Clan" [(ngModel)]="clanscelto" name="clanscelto" style="max-width:85%;" required>
-        @for (c of clan; track c) {
+        @for (c of clan(); track c) {
           <ion-select-option value="{{c.idclan}}" >{{c.nomeclan}}</ion-select-option>
         }
       </ion-select>
@@ -123,7 +123,7 @@
 
   <ion-row  >
     <ion-col>
-      <ion-button  shape="round" size="full" type="submit" [disabled]="clanscelto===0" (click)="inviamessaggioclan()" >
+      <ion-button  shape="round" size="full" type="submit" [disabled]="clanscelto()===0" (click)="inviamessaggioclan()" >
         <ion-icon name="paper-plane-outline" color="medium" ></ion-icon> &nbsp;
         Invia messaggio al Clan
       </ion-button>
@@ -139,7 +139,7 @@
 
 <!------    MODAL  PER LA VISUALIZZAZIONE DELL'OGGETTO -->
 
-  <ion-modal [isOpen]="isModalOpen" >
+  <ion-modal [isOpen]="isModalOpen()" >
     <ng-template>
       <ion-header>
         <ion-toolbar color="medium">
@@ -153,14 +153,14 @@
   
         <ion-card>
           <ion-card-header>
-            <ion-card-title>{{oggetto.nomeoggetto}}</ion-card-title>
-            <ion-card-subtitle>{{oggetto.descrizione}}</ion-card-subtitle>
+            <ion-card-title>{{oggetto().nomeoggetto}}</ion-card-title>
+            <ion-card-subtitle>{{oggetto().descrizione}}</ion-card-subtitle>
           </ion-card-header>
   
-          @if (this.oggetto.esito.length > 0) {
+          @if (oggetto().esito.length > 0) {
             <ion-card-content>
               <ion-list>
-              @for (xx of this.oggetto.esito ; track xx) {
+              @for (xx of oggetto().esito ; track xx) {
                   <ion-item>
                     <ion-label> <ion-text color="primary"> {{xx.motivo}} </ion-text> {{xx.descrizione}} </ion-label>               
                   </ion-item>            

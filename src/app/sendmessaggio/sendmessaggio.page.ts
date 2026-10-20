@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -37,7 +37,7 @@ import {
 })
 export class SendmessaggioPage  {
   requestID = 0;
-  messaggio = '';
+  messaggio = signal('');
 
   http = inject(HttpClient);
   route = inject(ActivatedRoute);
@@ -55,11 +55,8 @@ export class SendmessaggioPage  {
   }
 
   invia() {
-    //console.log(this.isEmpty(this.messaggio));
-
-    if (this.isEmpty(this.messaggio) === true) {
+    if (this.isEmpty(this.messaggio())) {
       this.router.navigate(['home']);
-      //console.log("vuoto");
     } else {
       const url = 'https://www.roma-by-night.it/ionicPHP/inviamessaggio.php';
 
@@ -67,7 +64,7 @@ export class SendmessaggioPage  {
         .post(url, {
           idutente: -1,
           destinatario: this.requestID,
-          messaggio: this.messaggio,
+          messaggio: this.messaggio(),
         })
         .subscribe(() => {
           this.router.navigate(['home']);

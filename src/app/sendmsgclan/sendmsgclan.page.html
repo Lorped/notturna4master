@@ -20,19 +20,19 @@
           nessuna, verrà inviato a tutte.
         </ion-text>
         <div>
-          @for (cronaca of cronache; track cronaca.idcronaca) {
+          @for (cronaca of cronache(); track cronaca.idcronaca) {
             <ion-chip
               role="button"
               tabindex="0"
-              [color]="cronacheSelezionate.includes(cronaca.idcronaca) ? 'danger' : 'medium'"
-              [attr.aria-pressed]="cronacheSelezionate.includes(cronaca.idcronaca)"
+              [color]="cronacheSelezionate().includes(cronaca.idcronaca) ? 'danger' : 'medium'"
+              [attr.aria-pressed]="cronacheSelezionate().includes(cronaca.idcronaca)"
               (click)="toggleCronaca(cronaca.idcronaca)"
               (keydown)="handleCronacaKeydown($event, cronaca.idcronaca)">
               {{ cronaca.descrizione }}
             </ion-chip>
           }
         </div>
-        @if (erroreCaricamentoCronache) {
+        @if (erroreCaricamentoCronache()) {
           <ion-text color="danger" role="alert">
             Non è stato possibile caricare le cronache. Riprova prima di inviare.
           </ion-text>
@@ -47,7 +47,7 @@
 
     <ion-row  >
       <ion-col>
-        <ion-button expand="full" shape="round" color="danger" type="submit" [disabled]="!cronacheCaricate">Invia</ion-button>
+        <ion-button expand="full" shape="round" color="danger" type="submit" [disabled]="!cronacheCaricate()">Invia</ion-button>
 			</ion-col>
     </ion-row>
 	

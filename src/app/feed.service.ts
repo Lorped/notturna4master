@@ -20,6 +20,6 @@ export class FeedService {
   private readonly http = inject(HttpClient);
 
   public getDadi(userid: number) {
-    return this.http.get<Array<FeedItem>>(`https://www.roma-by-night.it/ionicPHP/dadi.php?userid=${userid}`);
+    return this.http.get<FeedItem[]>(`https://www.roma-by-night.it/ionicPHP/dadi.php?userid=${userid}`);
   }
 }

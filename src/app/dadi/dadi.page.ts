@@ -1,9 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  inject,
-} from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { FeedService, FeedItem } from '../feed.service';
 import { HttpClient } from '@angular/common/http';
 import {
@@ -48,8 +43,7 @@ import {
   ],
 })
 export class DadiPage implements OnInit {
-  private readonly changeDetectorRef = inject(ChangeDetectorRef);
-  tiridado: Array<FeedItem> = [];
+  tiridado = signal<FeedItem[]>([]);
 
   feed = inject(FeedService);
   http = inject(HttpClient);
@@ -61,12 +55,8 @@ export class DadiPage implements OnInit {
 
   loadDadi() {
     this.feed.getDadi(-1).subscribe((allFeeds) => {
-      //console.log ("allf", allFeeds);
-      this.tiridado = allFeeds;
-      this.changeDetectorRef.markForCheck();
+      this.tiridado.set(allFeeds);
     });
-
-    // console.log(this.tiridado)
   }
 
   handleRefresh(event: RefresherCustomEvent) {

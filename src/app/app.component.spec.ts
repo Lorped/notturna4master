@@ -1,4 +1,7 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, provideZonelessChangeDetection } from '@angular/core';
+import { provideHttpClient } from '@angular/common/http';
+import { provideRouter } from '@angular/router';
+import { provideIonicAngular } from '@ionic/angular';
 import { TestBed } from '@angular/core/testing';
 
 import { AppComponent } from './app.component';
@@ -8,6 +11,7 @@ describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
+      providers: [provideZonelessChangeDetection(), provideIonicAngular(), provideRouter([]), provideHttpClient()],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });

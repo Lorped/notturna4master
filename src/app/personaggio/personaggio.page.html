@@ -11,78 +11,78 @@
 
 <ion-content no-padding >
 
-  <h3 class="mypad2">{{user['nomepg']}} - ({{user['nomeplayer']}})</h3>
+  <h3 class="mypad2">{{user()['nomepg']}} - ({{user()['nomeplayer']}})</h3>
 
   <div style=" border: 1px solid #ff0000;   border-radius: 2px; margin-left:5px; margin-right:5px;" >
     <ion-grid class="mypad">
       <ion-row>
         <ion-col size="3" >Clan</ion-col>
-        <ion-col size="4" style="color:#FF0000;">{{user['nomeclan']}}</ion-col>
+        <ion-col size="4" style="color:#FF0000;">{{user()['nomeclan']}}</ion-col>
         <ion-col size="4" >Generazione</ion-col>
-        <ion-col size="1" style="color:#FF0000;">{{user['generazione']}}</ion-col>
+        <ion-col size="1" style="color:#FF0000;">{{user()['generazione']}}</ion-col>
       </ion-row>
       <ion-row>
         <ion-col size="3" >Status</ion-col>
-        <ion-col size="4" style="color:#FF0000;">{{user['status']}}</ion-col>
+        <ion-col size="4" style="color:#FF0000;">{{user()['status']}}</ion-col>
         <ion-col size="4" >Ctr. del Sangue</ion-col>
-        <ion-col size="1" style="color:#FF0000;">{{user['bloodp']}}</ion-col>
+        <ion-col size="1" style="color:#FF0000;">{{user()['bloodp']}}</ion-col>
       </ion-row>
       <ion-row>
         <ion-col size="3" >Sentiero</ion-col>
-        <ion-col style="text-align:left; color:#FF0000;">{{user['sentiero']}}&nbsp;&nbsp;<span style="color:#FF0000;">-</span>&nbsp;&nbsp;{{user['valsentiero']}}/10</ion-col>
+        <ion-col style="text-align:left; color:#FF0000;">{{user()['sentiero']}}&nbsp;&nbsp;<span style="color:#FF0000;">-</span>&nbsp;&nbsp;{{user()['valsentiero']}}/10</ion-col>
       </ion-row>
       <ion-row>
         <ion-col size="5" >Forza di Volontà</ion-col>
-        <ion-col size="2" style="color:#FF0000;">{{user['fdv']}}/{{user['fdvmax']}}</ion-col>
-        <ion-col size="2" >Ev. <span style="color:#FF0000;">{{user['xp']}}</span></ion-col>
-        <ion-col size="3" >Avanz. <span style="color:#FF0000;">{{user['xpspesi']}}</span></ion-col>
+        <ion-col size="2" style="color:#FF0000;">{{user()['fdv']}}/{{user()['fdvmax']}}</ion-col>
+        <ion-col size="2" >Ev. <span style="color:#FF0000;">{{user()['xp']}}</span></ion-col>
+        <ion-col size="3" >Avanz. <span style="color:#FF0000;">{{user()['xpspesi']}}</span></ion-col>
       </ion-row>
       <ion-row>
         <ion-col size="7" >Fama in città</ion-col>
-        <!-- <ion-col><img src="assets/img/5b/{{user['fama1']}}.png"></ion-col> -->
+        <!-- <ion-col><img src="assets/img/5b/{{user()['fama1']}}.png"></ion-col> -->
         <ion-col>@for (item of 5|times ; track item; let ix = $index) {
-          <i class="fa fa-circle-o mymedicon " [ngClass]="{'myred2 fa-circle': ix < user['fama1']}"></i>
+          <i class="fa fa-circle-o mymedicon " [ngClass]="{'myred2 fa-circle': ix < user()['fama1']}"></i>
         }</ion-col>
       </ion-row>
       <ion-row>
         <ion-col size="7" >Fama tra i Vampiri</ion-col>
-        <!-- <ion-col><img src="assets/img/5b/{{user['fama2']}}.png"></ion-col> -->
+        <!-- <ion-col><img src="assets/img/5b/{{user()['fama2']}}.png"></ion-col> -->
         <ion-col>@for (item of 5|times ; track item; let ix = $index) {
-          <i class="fa fa-circle-o mymedicon " [ngClass]="{'myred2 fa-circle': ix < user['fama2']}"></i>
+          <i class="fa fa-circle-o mymedicon " [ngClass]="{'myred2 fa-circle': ix < user()['fama2']}"></i>
         }</ion-col>
       </ion-row>
       <ion-row>
         <ion-col size="7" >Fama nel Mondo Oscuro</ion-col>
-        <!-- <ion-col><img src="assets/img/5b/{{user['fama3']}}.png"></ion-col> -->
+        <!-- <ion-col><img src="assets/img/5b/{{user()['fama3']}}.png"></ion-col> -->
         <ion-col>@for (item of 5|times ; track item; let ix = $index) {
-          <i class="fa fa-circle-o mymedicon " [ngClass]="{'myred2 fa-circle': ix < user['fama3']}"></i>
+          <i class="fa fa-circle-o mymedicon " [ngClass]="{'myred2 fa-circle': ix < user()['fama3']}"></i>
         }</ion-col>
       </ion-row>
       <ion-row>
         <ion-col size="3" >Punti Sete: </ion-col>
-        <ion-col size="2" style="color:#FF0000;">{{user['PScorrenti']}}/{{user['maxps']}}</ion-col>
+        <ion-col size="2" style="color:#FF0000;">{{user()['PScorrenti']}}/{{user()['maxps']}}</ion-col>
         <ion-col>
-          <button  class="btn  btn-xs" (click)="menops()" [disabled]="user['PScorrenti']<1"><i class="fa fa-minus"></i></button>
-          @for (item of user['PScorrenti']|times ; track item; let ix = $index) {
+          <button  class="btn  btn-xs" (click)="menops()" [disabled]="user()['PScorrenti']<1"><i class="fa fa-minus"></i></button>
+          @for (item of user()['PScorrenti']|times ; track item; let ix = $index) {
             <i class="fa fa-circle mysmallicon myred2"></i>
           }
-          @for (item of user['maxps']-user['PScorrenti']|times ; track item; let ix = $index) {
+          @for (item of user()['maxps']-user()['PScorrenti']|times ; track item; let ix = $index) {
             <i class="fa fa-circle-o mysmallicon"></i>
           }
-          <button class="btn  btn-xs" (click)="piups()" [disabled]="user['PScorrenti']>=user['maxps']"><i class="fa fa-plus"></i></button>
+          <button class="btn  btn-xs" (click)="piups()" [disabled]="user()['PScorrenti']>=user()['maxps']"><i class="fa fa-plus"></i></button>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size="4" >Punti Ferita: <span style="color:#FF0000;">{{user['pf']}}</span></ion-col>
-        <ion-col size="2" >RD: <span style="color:#FF0000;">{{user['rd']}}</span></ion-col>
-        <ion-col size="2" >RP: <span style="color:#FF0000;">{{user['rp']}}</span></ion-col>
-        <ion-col size="4" >Bane: <span style="color:#FF0000;">{{user['bane']}}</span></ion-col>
+        <ion-col size="4" >Punti Ferita: <span style="color:#FF0000;">{{user()['pf']}}</span></ion-col>
+        <ion-col size="2" >RD: <span style="color:#FF0000;">{{user()['rd']}}</span></ion-col>
+        <ion-col size="2" >RP: <span style="color:#FF0000;">{{user()['rp']}}</span></ion-col>
+        <ion-col size="4" >Bane: <span style="color:#FF0000;">{{user()['bane']}}</span></ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size="12" >Linea di Sangue: <span style="color:#FF0000;">{{user['nomelds']}}</span></ion-col>
+        <ion-col size="12" >Linea di Sangue: <span style="color:#FF0000;">{{user()['nomelds']}}</span></ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size="12" >Cronaca: <span style="color:#FF0000;">{{user['Descrizione']}}</span></ion-col>
+        <ion-col size="12" >Cronaca: <span style="color:#FF0000;">{{user()['Descrizione']}}</span></ion-col>
       </ion-row>
     </ion-grid>
   </div>
@@ -105,31 +105,31 @@
         <ion-row>
           <ion-col>
             @for (item of 5|times ; track item; let ix = $index) {
-              <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix < user.forza}"></i>
+              <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix < user().forza}"></i>
             }<br>
-            @if (this.user.maxstat >5){
+            @if (user().maxstat >5){
               @for (item of 5|times ; track item; let ix = $index) {
-                <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix+5 < user.forza}"></i>
+                <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix+5 < user().forza}"></i>
               }
             }
           </ion-col>
           <ion-col>
             @for (item of 5|times ; track item; let ix = $index) {
-              <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix < user.destrezza}"></i>
+              <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix < user().destrezza}"></i>
             }<br>
-            @if (this.user.maxstat >5){
+            @if (user().maxstat >5){
               @for (item of 5|times ; track item; let ix = $index) {
-                <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix+5 < user.destrezza}"></i>
+                <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix+5 < user().destrezza}"></i>
               }
             }
           </ion-col>
           <ion-col>
             @for (item of 5|times ; track item; let ix = $index) {
-              <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix < user.attutimento}"></i>
+              <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix < user().attutimento}"></i>
             }<br>
-            @if (this.user.maxstat >5){
+            @if (user().maxstat >5){
               @for (item of 5|times ; track item; let ix = $index) {
-                <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix+5 < user.attutimento}"></i>
+                <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix+5 < user().attutimento}"></i>
               }
             }
           </ion-col>
@@ -147,31 +147,31 @@
         <ion-row>
           <ion-col>
             @for (item of 5|times ; track item; let ix = $index) {
-              <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix < user.carisma}"></i>
+              <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix < user().carisma}"></i>
             }<br>
-            @if (this.user.maxstat >5){
+            @if (user().maxstat >5){
               @for (item of 5|times ; track item; let ix = $index) {
-                <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix+5 < user.carisma}"></i>
+                <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix+5 < user().carisma}"></i>
               }
             }
           </ion-col>
           <ion-col>
             @for (item of 5|times ; track item; let ix = $index) {
-              <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix < user.persuasione}"></i>
+              <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix < user().persuasione}"></i>
             }<br>
-            @if (this.user.maxstat >5){
+            @if (user().maxstat >5){
               @for (item of 5|times ; track item; let ix = $index) {
-                <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix+5 < user.persuasione}"></i>
+                <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix+5 < user().persuasione}"></i>
               }
             }
           </ion-col>
           <ion-col>
             @for (item of 5|times ; track item; let ix = $index) {
-              <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix < user.saggezza}"></i>
+              <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix < user().saggezza}"></i>
             }<br>
-            @if (this.user.maxstat >5){
+            @if (user().maxstat >5){
               @for (item of 5|times ; track item; let ix = $index) {
-                <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix+5 < user.saggezza}"></i>
+                <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix+5 < user().saggezza}"></i>
               }
             }
           </ion-col>
@@ -189,31 +189,31 @@
         <ion-row>
           <ion-col>
             @for (item of 5|times ; track item; let ix = $index) {
-              <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix < user.percezione}"></i>
+              <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix < user().percezione}"></i>
             }<br>
-            @if (this.user.maxstat >5){
+            @if (user().maxstat >5){
               @for (item of 5|times ; track item; let ix = $index) {
-                <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix+5 < user.percezione}"></i>
+                <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix+5 < user().percezione}"></i>
               }
             }
           </ion-col>
           <ion-col>
             @for (item of 5|times ; track item; let ix = $index) {
-              <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix < user.intelligenza}"></i>
+              <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix < user().intelligenza}"></i>
             }<br>
-            @if (this.user.maxstat >5){
+            @if (user().maxstat >5){
               @for (item of 5|times ; track item; let ix = $index) {
-                <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix+5 < user.intelligenza}"></i>
+                <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix+5 < user().intelligenza}"></i>
               }
             }
           </ion-col>
           <ion-col>
             @for (item of 5|times ; track item; let ix = $index) {
-              <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix < user.prontezza}"></i>
+              <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix < user().prontezza}"></i>
             }<br>
-            @if (this.user.maxstat >5){
+            @if (user().maxstat >5){
               @for (item of 5|times ; track item; let ix = $index) {
-                <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix+5 < user.prontezza}"></i>
+                <i class="fa fa-circle-o myxsmallicon " [ngClass]="{'fa-circle myred2': ix+5 < user().prontezza}"></i>
               }
             }
           </ion-col>
@@ -231,21 +231,21 @@
 
   <ion-row >
     <ion-col size="7">Bonus attivazione</ion-col>
-    <ion-col>+{{ this.user.attivazione }}</ion-col>
+    <ion-col>+{{ user().attivazione }}</ion-col>
   </ion-row>
   <ion-row >
     <ion-col size="7">Bonus attacco/difesa</ion-col>
-    <ion-col>+{{ this.user.bonusdisc }}</ion-col>
+    <ion-col>+{{ user().bonusdisc }}</ion-col>
   </ion-row>
 
-  @for (desc of this.userskill.discipline; track desc) {
+  @for (desc of userskill().discipline; track desc) {
   <ion-row>
       <ion-col size="7">{{ desc.nomedisc }} @if(desc.focus === 1 ){ <i class="fa fa-star mymedicon "></i>}</ion-col>
       <ion-col>
         @for (item of 5|times ; track item; let ix = $index) {
           <i class="fa fa-circle-o mysmallicon " [ngClass]="{'fa-circle myred2': ix < desc.livello}"></i>
         }<br>
-        @if (user.maxdisc > 5) {
+        @if (user().maxdisc > 5) {
           @for (item of 5|times ; track item; let ix = $index) {
               <i class="fa fa-circle-o mysmallicon " [ngClass]="{'fa-circle myred2': ix+5 < desc.livello}"></i>
           }
@@ -256,13 +256,13 @@
 
 <!----   NECRO/TAUM -->
 
-  @if (this.userskill.necro.length > 0) {
+  @if (userskill().necro.length > 0) {
     <ion-row style="align-items: center;">
       <ion-col ><hr/></ion-col>
       <ion-col size="6" style="text-align: center; font-size: 1em;">Necromanzie</ion-col>
       <ion-col ><hr/></ion-col>
     </ion-row>
-    @for ( necro of this.userskill.necro; track necro) {
+    @for ( necro of userskill().necro; track necro) {
       <ion-row>
         <ion-col size="7">{{ necro.nomenecro }} @if(necro.focus === 1 ){ <i class="fa fa-star mymedicon "></i>}</ion-col>
         <ion-col>
@@ -273,13 +273,13 @@
       </ion-row>
     }
   }
-  @if (this.userskill.taum.length > 0) {
+  @if (userskill().taum.length > 0) {
     <ion-row style="align-items: center;">
       <ion-col ><hr/></ion-col>
       <ion-col size="6" style="text-align: center; font-size: 1em;">Taumaturgie</ion-col>
       <ion-col ><hr/></ion-col>
     </ion-row>
-    @for ( taum of this.userskill.taum; track taum) {
+    @for ( taum of userskill().taum; track taum) {
       <ion-row>
         <ion-col size="7">{{ taum.nometaum }} @if(taum.focus === 1 ){ <i class="fa fa-star mymedicon "></i>}</ion-col>
         <ion-col>
@@ -291,13 +291,13 @@
     }
   }
 
-  @if (this.userskill.rituali.length > 0) {
+  @if (userskill().rituali.length > 0) {
     <ion-row style="align-items: center;">
       <ion-col ><hr/></ion-col>
       <ion-col size="6" style="text-align: center; font-size: 1em;">Rituali</ion-col>
       <ion-col ><hr/></ion-col>
     </ion-row>
-    @for (rit of this.userskill.rituali; track rit) {
+    @for (rit of userskill().rituali; track rit) {
       <ion-row>
 
           <ion-col> {{ rit.nomerituale }} - lvl.{{ rit.livello }} </ion-col>
@@ -317,7 +317,7 @@
 
 
 <ion-accordion-group>
-@for ( sk of this.userskill.skill; track sk) {
+@for ( sk of userskill().skill; track sk) {
   <ion-accordion value="{{ sk.nomeskill }}">
     <ion-item slot="header" color="light">
 
@@ -352,7 +352,7 @@
   <ion-item slot="header" color="light">
     <ion-label style="display: flex; justify-content: space-between;">Altri skill</ion-label>
   </ion-item>
-  @for (sk of userskill.otherskill; track sk; let ix = $index) {
+  @for (sk of userskill().otherskill; track sk; let ix = $index) {
     <div class="ion-padding" slot="content" style="display: flex; justify-content: space-between;">       
         {{ sk.nomeskill }}
         <div class="ion-text-end">
@@ -366,7 +366,7 @@
 </ion-accordion-group>
 
 
-@for (desc of this.userskill.skill; track desc) {
+@for (desc of userskill().skill; track desc) {
   <ion-row>
     @if (desc.tipologia === 2 ) {
       <ion-col size="7">{{ desc.nomeskill }}</ion-col>
@@ -395,33 +395,33 @@
 
   <ion-row>
     <ion-col size="7" >Pugno/Calcio</ion-col>
-    <ion-col >{{ foripot2  }} </ion-col>
+    <ion-col >{{ foripot2()  }} </ion-col>
   </ion-row>
-  @if (artigli === 1) {
+  @if (artigli() === 1) {
     <ion-row>
       <ion-col size="7" >Artigli della Bestia</ion-col>
-      <ion-col >{{ forza +  rissa + potenza +1 }} </ion-col>
+      <ion-col >{{ forza() +  rissa() + potenza() +1 }} </ion-col>
     </ion-row>
   }
   <ion-row>
     <ion-col size="7" >Pugnale/Paletto</ion-col>
-    <ion-col >{{ fomipot2 +1 }} </ion-col>
+    <ion-col >{{ fomipot2() +1 }} </ion-col>
   </ion-row>
   <ion-row>
     <ion-col size="7" >Spada corta/Mazza</ion-col>
-    <ion-col >{{ fomipot2 +2 }} </ion-col>
+    <ion-col >{{ fomipot2() +2 }} </ion-col>
   </ion-row>
   <ion-row>
     <ion-col size="7" >Spada lunga</ion-col>
-    <ion-col >{{ fomipot2 +3 }} </ion-col>
+    <ion-col >{{ fomipot2() +3 }} </ion-col>
   </ion-row>
   <ion-row>
     <ion-col size="7" >Pugnale da lancio</ion-col>
-    <ion-col >{{ folapot2 +1 }} </ion-col>
+    <ion-col >{{ folapot2() +1 }} </ion-col>
   </ion-row>
   <ion-row>
     <ion-col size="7" >Balestra</ion-col>
-    <ion-col >{{ treti2 +1 }} </ion-col>
+    <ion-col >{{ treti2() +1 }} </ion-col>
   </ion-row>
 
   <ion-row style="align-items: center;">
@@ -430,28 +430,28 @@
     <ion-col ><hr/></ion-col>
   </ion-row>
 
-  @if (fuoco > 0) {
+  @if (fuoco() > 0) {
     <ion-row>
       <ion-col size="7" >Revolver/Pistola leggera</ion-col>
-      <ion-col >{{ trefuoco2  }} </ion-col>
+      <ion-col >{{ trefuoco2()  }} </ion-col>
     </ion-row>
   }
-  @if (fuoco > 0) {
+  @if (fuoco() > 0) {
     <ion-row>
       <ion-col size="7" >Revolver/Pistola pesante</ion-col>
-      <ion-col >{{ trefuoco2 +1 }} </ion-col>
+      <ion-col >{{ trefuoco2() +1 }} </ion-col>
     </ion-row>
   }
-  @if (fuoco > 1) {
+  @if (fuoco() > 1) {
     <ion-row>
       <ion-col size="7" >Mitra leggero</ion-col>
-      <ion-col >{{ trefuoco2 +2 }} </ion-col>
+      <ion-col >{{ trefuoco2() +2 }} </ion-col>
     </ion-row>
   }
-  @if (fuoco > 2) {
+  @if (fuoco() > 2) {
     <ion-row>
       <ion-col size="7" >Mitra pesante/d'assalto</ion-col>
-      <ion-col >{{ trefuoco2 +3 }} </ion-col>
+      <ion-col >{{ trefuoco2() +3 }} </ion-col>
     </ion-row>
   }
 
@@ -463,7 +463,7 @@
     <ion-col ><hr/></ion-col>
   </ion-row>
 
-  @for (dd of this.userskill.background; track dd) {
+  @for (dd of userskill().background; track dd) {
 
     <ion-row>
       <ion-col size="7">{{ dd.nomeback}}</ion-col>
@@ -489,11 +489,11 @@
       <ion-row>
       <ion-col size="7">Contanti</ion-col>
       <ion-col>
-          {{this.user.contanti}}
+          {{user().contanti}}
       </ion-col>
     </ion-row>
 
-  @if (this.userskill.contatti.length) {
+  @if (userskill().contatti.length) {
 
     <ion-row style="align-items: center;">
       <ion-col ><hr/></ion-col>
@@ -502,7 +502,7 @@
     </ion-row>
 
 
-    @for (dd of this.userskill.contatti; track dd) {
+    @for (dd of userskill().contatti; track dd) {
         <ion-row>
           <ion-col size="7">{{ dd.nomecontatto}}</ion-col>
           <ion-col>
@@ -514,7 +514,7 @@
       }
   }
 
-    @if (this.userskill.alleati.length) {
+    @if (userskill().alleati.length) {
 
       <ion-row style="align-items: center;">
         <ion-col ><hr/></ion-col>
@@ -523,7 +523,7 @@
       </ion-row>
 
 
-      @for (dd of this.userskill.alleati; track dd) {
+      @for (dd of userskill().alleati; track dd) {
         <ion-row>
           <ion-col size="7">{{ dd.nomealleato}}</ion-col>
           <ion-col>
@@ -541,8 +541,8 @@
         <ion-col ><hr/></ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="6">{{ this.user.rifugio}}</ion-col>
-      <ion-col size="6">{{ this.user.zona}}</ion-col>
+      <ion-col size="6">{{ user().rifugio}}</ion-col>
+      <ion-col size="6">{{ user().zona}}</ion-col>
     </ion-row>
 
 

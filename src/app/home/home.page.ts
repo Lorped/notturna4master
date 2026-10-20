@@ -1,10 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import {
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  inject,
-} from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
@@ -55,12 +50,12 @@ export class Oggetto {
     public id = '';
     public nomeoggetto = '';
     public descrizione = '';
-    public esito: Array<Esito> = [];
+    public esito: Esito[] = [];
     public domanda = '';
     public R1 = '';
     public R2 = '';
-    public esitoSI: Array<Esito> = [];
-    public esitoNO: Array<Esito> = [];
+    public esitoSI: Esito[] = [];
+    public esitoNO: Esito[] = [];
     public datascan = '';
 }
 
@@ -77,7 +72,7 @@ export class Clan {
 }
 
 export interface ClanResponse {
-  clan: Array<Clan>;
+  clan: Clan[];
 }
 
 @Component({
@@ -111,29 +106,32 @@ export interface ClanResponse {
   ],
 })
 export class HomePage implements OnInit {
-  private readonly changeDetectorRef = inject(ChangeDetectorRef);
-  clan: Array<Clan> = [];
-  clanscelto = 0;
+  clan = signal<Clan[]>([]);
+  clanscelto = signal(0);
 
-  isModalOpen = false;
-  oggetto: Oggetto = new Oggetto();
+  isModalOpen = signal(false);
+  oggetto = signal(new Oggetto());
 
 
   public barcodes: Barcode[] = [];
   public isPermissionGranted = false;
 
-  listacronache: Array<Cronaca> = [];
-  listautenti: Array<Utente> = [];
-  displayedUtenti: Array<Utente> = [];
-  selectedCronache: number[] = [];
-  pgscelto = 0;
-  selected = '';
+  listacronache = signal<Cronaca[]>([]);
+  listautenti = signal<Utente[]>([]);
+  selectedCronache = signal<number[]>([]);
+  displayedUtenti = computed(() => {
+    const selected = this.selectedCronache();
+    const utenti = this.listautenti();
+    return selected.length
+      ? utenti.filter((utente) => selected.includes(utente.IDcronaca))
+      : utenti;
+  });
+  pgscelto = signal(0);
 
-
-  pscorrenti = 0;
-  maxps = 0;
-  fdv = 0;
-  fdvmax = 0;
+  pscorrenti = signal(0);
+  maxps = signal(0);
+  fdv = signal(0);
+  fdvmax = signal(0);
 
   http = inject(HttpClient);
   router = inject(Router);
@@ -158,14 +156,15 @@ export class HomePage implements OnInit {
       this.presentAlert();
     }
 
-    const { available } =
-      await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
+    try {
+      const { available } =
+        await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
 
-    if (available == false) {
-      // alert("debug: module not available");
-      await BarcodeScanner.installGoogleBarcodeScannerModule();
-    } else {
-      // alert("debug: module available");
+      if (available == false) {
+        await BarcodeScanner.installGoogleBarcodeScannerModule();
+      }
+    } catch {
+      // scanner non disponibile (es. web)
     }
   }
 
@@ -196,105 +195,69 @@ export class HomePage implements OnInit {
     if (!rawValue) {
       return;
     }
-    this.oggetto.id = rawValue;
+    const id = rawValue.length > 12 ? rawValue.slice(-12) : rawValue;
 
-    if (this.oggetto.id.length > 12) {
-      const newbarcode = this.oggetto.id.substr(-12);
-      this.oggetto.id = newbarcode;
-    }
-
-    
-
-    /*******   TEST  
-    this.oggetto.id='543478635197';
-    ***/
-    
-    this.authservice.barcode( this.oggetto.id).subscribe((data) => {
-
-      this.isModalOpen = true;
-      
-      // console.log(data);
-
-      this.oggetto.nomeoggetto = data.nomeoggetto;
-      this.oggetto.descrizione = data.descrizione;
-      this.oggetto.esito = data.esito;
-      this.oggetto.domanda = data.domanda;
-      this.oggetto.R1 = data.R1;
-      this.oggetto.R2 = data.R2;
-      this.oggetto.esitoSI = data.esitoSI;
-      this.oggetto.esitoNO = data.esitoNO;  
-      this.changeDetectorRef.markForCheck();
-
+    this.authservice.barcode(id).subscribe((data) => {
+      const oggetto = new Oggetto();
+      oggetto.id = id;
+      oggetto.nomeoggetto = data.nomeoggetto;
+      oggetto.descrizione = data.descrizione;
+      oggetto.esito = data.esito;
+      oggetto.domanda = data.domanda;
+      oggetto.R1 = data.R1;
+      oggetto.R2 = data.R2;
+      oggetto.esitoSI = data.esitoSI;
+      oggetto.esitoNO = data.esitoNO;
+      this.oggetto.set(oggetto);
+      this.isModalOpen.set(true);
     });
   }
 
   cancel() {
-    this.isModalOpen = false;
+    this.isModalOpen.set(false);
   }
 
   ngOnInit() {
     const url = 'https://www.roma-by-night.it/ionicPHP/utenti.php';
 
-    this.listautenti = [];
-
-    this.http.get<Array<Utente>>(url).subscribe((res) => {
-      this.listautenti = res ?? [];
-
-      this.applyFiltroCronaca();
-      this.changeDetectorRef.markForCheck();
-      // console.log(this.listautenti);
+    this.http.get<Utente[]>(url).subscribe((res) => {
+      this.listautenti.set(res ?? []);
     });
 
     this.http
       .get<ClanResponse>('https://www.roma-by-night.it/Notturna2/wsPHP/getregistra.php')
       .subscribe((data: ClanResponse) => {
-        this.clan = data.clan;
-        this.changeDetectorRef.markForCheck();
+        this.clan.set(data.clan);
       });
 
 
     this.authservice.getlistcronache().subscribe(
       (data) => {
-        this.listacronache = data;
-        this.changeDetectorRef.markForCheck();
+        this.listacronache.set(data);
       }
     );
 
   }
 
   filterByCronaca(idcronaca: number): void {
-    this.pgscelto = 0;
+    this.pgscelto.set(0);
     idcronaca = Number(idcronaca);
-    const index = this.selectedCronache.indexOf(idcronaca);
 
-    if (index >= 0) {
-      this.selectedCronache.splice(index, 1);
-    } else {
-      this.selectedCronache.push(idcronaca);
-    }
-
-    this.applyFiltroCronaca();
-  }
-
-  private applyFiltroCronaca(): void {
-    if (!this.selectedCronache.length) {
-      this.displayedUtenti = [...this.listautenti];
-      return;
-    }
-
-    this.displayedUtenti = this.listautenti.filter(utente => this.selectedCronache.includes(utente.IDcronaca));
-
-    console.log('Displayed Utenti:', this.displayedUtenti);
+    this.selectedCronache.update((selected) =>
+      selected.includes(idcronaca)
+        ? selected.filter((id) => id !== idcronaca)
+        : [...selected, idcronaca],
+    );
   }
 
   godadi() {
     this.router.navigate(['dadi']);
   }
   vedischeda() {
-    this.router.navigate(['personaggio/' + this.pgscelto]);
+    this.router.navigate(['personaggio/' + this.pgscelto()]);
   }
   inviamessaggio() {
-    this.router.navigate(['sendmessaggio/' + this.pgscelto]);
+    this.router.navigate(['sendmessaggio/' + this.pgscelto()]);
   }
 
 
@@ -305,15 +268,14 @@ export class HomePage implements OnInit {
   }
 
   inviamessaggioclan() {
-    this.router.navigate(['sendmsgclan/' + this.clanscelto]);
+    this.router.navigate(['sendmsgclan/' + this.clanscelto()]);
   }
 
   changefdv(change: number) {
-    if (this.pgscelto > 0) {
-      this.authservice.changefdv(this.pgscelto, change).subscribe({
+    if (this.pgscelto() > 0) {
+      this.authservice.changefdv(this.pgscelto(), change).subscribe({
         next: () => {
-          this.fdv = this.fdv + Number(change);
-          this.changeDetectorRef.markForCheck();
+          this.fdv.update((fdv) => fdv + Number(change));
         },
         error: (error: unknown) => {
           console.error('Error changing FDV:', error);
@@ -325,12 +287,10 @@ export class HomePage implements OnInit {
   } 
   
   changeps(change: number) {
-    if (this.pgscelto > 0) {
-      this.authservice.changeps(this.pgscelto, change).subscribe({
+    if (this.pgscelto() > 0) {
+      this.authservice.changeps(this.pgscelto(), change).subscribe({
         next: () => {
-          //console.log('PS changed successfully:', data);
-          this.pscorrenti = this.pscorrenti + Number(change);
-          this.changeDetectorRef.markForCheck();
+          this.pscorrenti.update((ps) => ps + Number(change));
         },
         error: (error: unknown) => {
           console.error('Error changing PS:', error);
@@ -343,14 +303,12 @@ export class HomePage implements OnInit {
 
   checkfdv_ps() {
     // TO DO: Implement the logic to check FDV for the selected character
-    this.authservice.getfdv(this.pgscelto).subscribe({
+    this.authservice.getfdv(this.pgscelto()).subscribe({
       next: (data) => {
-        //console.log('FDV and PS data:', data);
-        this.fdv = Number(data.fdv);
-        this.fdvmax = Number(data.fdvmax);
-        this.pscorrenti = Number(data.PScorrenti);
-        this.maxps = Number(data.maxps);
-        this.changeDetectorRef.markForCheck();
+        this.fdv.set(Number(data.fdv));
+        this.fdvmax.set(Number(data.fdvmax));
+        this.pscorrenti.set(Number(data.PScorrenti));
+        this.maxps.set(Number(data.maxps));
       },
       error: (error: unknown) => {
         console.error('Error retrieving FDV and PS data:', error);
